@@ -1,7 +1,9 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Net;
+using static AsaasModelCommunity;
 
 public static class GvinciAsaasCommunity
 {
@@ -106,11 +108,29 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsDelete(string Token, string idCobranca, string Environment)
+    public static string Assas_PaymentsDelete(string Token, string PaymentsID, string Environment)
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/" : "https://sandbox.asaas.com/api/v3/");
-        var client = new RestClient(LinkAsaas + idCobranca);
+        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+        var client = new RestClient(LinkAsaas + "/api/v3/payments/" + PaymentsID);
+
+        var request = new RestRequest();
+        request.AddHeader("Content-Type", "application/json");
+        request.AddHeader("access_token", Token);
+
+        var response = client.Delete(request);
+        if (!response.IsSuccessful)
+        {
+            throw new Exception(response.Content);
+        }
+        return response.Content;
+    }
+
+    public static string Assas_PaymentsConsult(string Token, string PaymentsID, string Environment)
+    {
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/customers" : "https://sandbox.asaas.com/api/v3/customers");
+        var client = new RestClient(LinkAsaas + PaymentsID);
         var request = new RestRequest();
         request.AddHeader("access_token", Token);
         var response = client.Delete(request);
@@ -121,11 +141,75 @@ public static class GvinciAsaasCommunity
         return response.Content;
     }
 
-    public static string Assas_PaymentsConsult(string Token, string idCobranca, string Environment)
+    public static string Assas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment)
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/" : "https://sandbox.asaas.com/api/v3/");
-        var client = new RestClient(LinkAsaas + idCobranca);
+        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+        var client = new RestClient(LinkAsaas + "/api/v3/payments/" + PaymentsID + "/refund");
+        
+        var request = new RestRequest();
+        request.AddHeader("Content-Type", "application/json");
+        request.AddHeader("access_token", Token);
+        
+        var body = @"{" + "\n" +
+                   @"    ""value"": " + Value.ToString() + "\n" +
+                   @"    ""description"": " + Description + "\n" +
+                   @"}";
+        
+        request.AddBody(body);
+
+        var response = client.Post(request);
+        if (!response.IsSuccessful)
+        {
+            throw new Exception(response.Content);
+        }
+        return response.Content;
+    }
+
+    public static string Asaas_SubscriptionsCreate(string Token, string CustomerID, string BillingType, DateTime NextDueDate, decimal Value, string Cycle, string Description, decimal DiscountValue, DateTime DueDateLimitDays, decimal FineValue, decimal InterestValue, string Environment)
+    {
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+        var client = new RestClient(LinkAsaas + "/api/v3/subscriptions");
+
+        var request = new RestRequest();
+        request.AddHeader("Content-Type", "application/json");
+        request.AddHeader("access_token", Token);
+
+        var body = @"{" + "\n" +
+                   @"    ""customer"": " + CustomerID + ",\n" +
+                   @"    ""billingType"": " + BillingType + ",\n" +
+                   @"    ""nextDueDate"": " + NextDueDate.ToString() + ",\n" +
+                   @"    ""value"": " + Value.ToString() + ",\n" +
+                   @"    ""cycle"": " + Cycle + ",\n" +
+                   @"    ""description"": " + Description + ",\n" +
+                   @"    ""discount"": " + "{\n" +
+                   @"       ""value"": " + DiscountValue.ToString() + ",\n" +
+                   @"       ""dueDateLimitDays"": " + DueDateLimitDays.ToString() + ",\n" +
+                   @"    },\n" +
+                   @"    ""fine"": " + "{\n" +
+                   @"       ""value"": " + FineValue.ToString() + ",\n" +
+                   @"    },\n" +
+                   @"    ""interest"": " + "{\n" +
+                   @"       ""value"": " + InterestValue.ToString() + ",\n" +
+                   @"    },\n" +
+                   @"}";
+
+        request.AddBody(body);
+
+        var response = client.Post(request);
+        if (!response.IsSuccessful)
+        {
+            throw new Exception(response.Content);
+        }
+        return response.Content;
+    }
+
+    public static string Asaas_SubscriptionsDelete(string Token, string CustomerID, string BillingType, DateTime DueDate, decimal Value, string Description, string DocRef, string Environment)
+    {
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/subscriptions" : "https://sandbox.asaas.com/api/v3/subscriptions");
+        var client = new RestClient(LinkAsaas + PaymentsID);
         var request = new RestRequest();
         request.AddHeader("access_token", Token);
         var response = client.Delete(request);
@@ -134,21 +218,6 @@ public static class GvinciAsaasCommunity
             throw new Exception(response.Content);
         }
         return response.Content;
-    }
-
-    public static void Assas_PaymentsRefund(string Token, string PaymentsID, string Environment)
-    {
-
-    }
-
-    public static void Asaas_SubscriptionsCreate(string Token, string CustomerID, string BillingType, DateTime DueDate, decimal Value, string Description, string DocRef, string Environment)
-    {
-
-    }
-
-    public static void Asaas_SubscriptionsDelete(string Token, string CustomerID, string BillingType, DateTime DueDate, decimal Value, string Description, string DocRef, string Environment)
-    {
-
     }
 
 }
