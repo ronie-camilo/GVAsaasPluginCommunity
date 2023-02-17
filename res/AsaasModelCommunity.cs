@@ -61,7 +61,7 @@ public class AsaasModelCommunity
         public List<Error> errors { get; set; }
     }
 
-    public class CobrancaRequest
+    public class PaymentsRequest
     {
         public string customer { get; set; }
         public string billingType { get; set; }
@@ -71,7 +71,7 @@ public class AsaasModelCommunity
         public string externalReference { get; set; }
     }
 
-    public class CobrancaBoletoPixRequest : CobrancaRequest
+    public class CobrancaBoletoPixRequest : PaymentsRequest
     {
         public Discount discount { get; set; }
         public Fine fine { get; set; }
@@ -80,7 +80,7 @@ public class AsaasModelCommunity
         public string creditCarDtoken { get; set; }
     }
 
-    public class CobrancaCartaoRequest : CobrancaRequest
+    public class CobrancaCartaoRequest : PaymentsRequest
     {
         public CreditCard creditCard { get; set; }
         public CreditCardHolderInfo creditCardHolderInfo { get; set; }

@@ -79,10 +79,13 @@ public static class GvinciAsaasCommunity
         try
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/" : "https://sandbox.asaas.com/api/v3/");
-            var client = new RestClient(LinkAsaas + "/payments");
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/payments/");
+
             var request = new RestRequest();
             request.AddHeader("access_token", Token);
+            request.AddHeader("Content-Type", "application/json");
+
             var cobrancaRequest = new AsaasModelCommunity.CobrancaBoletoPixRequest();
             cobrancaRequest.customer = CustomerID;
             cobrancaRequest.dueDate = DueDate.ToString("yyyy-MM-dd");
@@ -93,14 +96,16 @@ public static class GvinciAsaasCommunity
             cobrancaRequest.interest = new AsaasModelCommunity.Interest { value = 2 }; // cobranca.PercentualJurosMes;
             cobrancaRequest.fine = new AsaasModelCommunity.Fine { value = 1 }; //cobranca.PercentualMulta;
             request.AddJsonBody(cobrancaRequest);
-            AsaasModelCommunity.CobrancaResponse cobrancaResponse = new AsaasModelCommunity.CobrancaResponse();
+
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
+
             var response = client.Post(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
             }
-            cobrancaResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
-            return cobrancaResponse.id;
+            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            return PaymentsResponse.id;
         }
         catch (Exception ex)
         {
@@ -110,114 +115,180 @@ public static class GvinciAsaasCommunity
 
     public static string Assas_PaymentsDelete(string Token, string PaymentsID, string Environment)
     {
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-        var client = new RestClient(LinkAsaas + "/api/v3/payments/" + PaymentsID);
-
-        var request = new RestRequest();
-        request.AddHeader("Content-Type", "application/json");
-        request.AddHeader("access_token", Token);
-
-        var response = client.Delete(request);
-        if (!response.IsSuccessful)
+        try
         {
-            throw new Exception(response.Content);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/payments/" + PaymentsID);
+
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
+
+            var response = client.Delete(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            return PaymentsResponse.status;
         }
-        return response.Content;
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
     public static string Assas_PaymentsConsult(string Token, string PaymentsID, string Environment)
     {
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/customers" : "https://sandbox.asaas.com/api/v3/customers");
-        var client = new RestClient(LinkAsaas + PaymentsID);
-        var request = new RestRequest();
-        request.AddHeader("access_token", Token);
-        var response = client.Delete(request);
-        if (!response.IsSuccessful)
+        try
         {
-            throw new Exception(response.Content);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/payments/" + PaymentsID);
+
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
+
+            var response = client.Post(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            return PaymentsResponse.status;
         }
-        return response.Content;
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
     public static string Assas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment)
     {
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-        var client = new RestClient(LinkAsaas + "/api/v3/payments/" + PaymentsID + "/refund");
-        
-        var request = new RestRequest();
-        request.AddHeader("Content-Type", "application/json");
-        request.AddHeader("access_token", Token);
-        
-        var body = @"{" + "\n" +
-                   @"    ""value"": " + Value.ToString() + "\n" +
-                   @"    ""description"": " + Description + "\n" +
-                   @"}";
-        
-        request.AddBody(body);
-
-        var response = client.Post(request);
-        if (!response.IsSuccessful)
+        try
         {
-            throw new Exception(response.Content);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/payments/" + PaymentsID + "/refund");
+
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            var body = @"{" + "\n" +
+                       @"    ""value"": " + Value.ToString() + "\n" +
+                       @"    ""description"": " + Description + "\n" +
+                       @"}";
+
+            request.AddBody(body);
+
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
+
+            var response = client.Post(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            return PaymentsResponse.status;
         }
-        return response.Content;
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
     }
 
     public static string Asaas_SubscriptionsCreate(string Token, string CustomerID, string BillingType, DateTime NextDueDate, decimal Value, string Cycle, string Description, decimal DiscountValue, DateTime DueDateLimitDays, decimal FineValue, decimal InterestValue, string Environment)
     {
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-        var client = new RestClient(LinkAsaas + "/api/v3/subscriptions");
-
-        var request = new RestRequest();
-        request.AddHeader("Content-Type", "application/json");
-        request.AddHeader("access_token", Token);
-
-        var body = @"{" + "\n" +
-                   @"    ""customer"": " + CustomerID + ",\n" +
-                   @"    ""billingType"": " + BillingType + ",\n" +
-                   @"    ""nextDueDate"": " + NextDueDate.ToString() + ",\n" +
-                   @"    ""value"": " + Value.ToString() + ",\n" +
-                   @"    ""cycle"": " + Cycle + ",\n" +
-                   @"    ""description"": " + Description + ",\n" +
-                   @"    ""discount"": " + "{\n" +
-                   @"       ""value"": " + DiscountValue.ToString() + ",\n" +
-                   @"       ""dueDateLimitDays"": " + DueDateLimitDays.ToString() + ",\n" +
-                   @"    },\n" +
-                   @"    ""fine"": " + "{\n" +
-                   @"       ""value"": " + FineValue.ToString() + ",\n" +
-                   @"    },\n" +
-                   @"    ""interest"": " + "{\n" +
-                   @"       ""value"": " + InterestValue.ToString() + ",\n" +
-                   @"    },\n" +
-                   @"}";
-
-        request.AddBody(body);
-
-        var response = client.Post(request);
-        if (!response.IsSuccessful)
+        try
         {
-            throw new Exception(response.Content);
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/subscriptions");
+
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            var body = @"{" + "\n" +
+                       @"    ""customer"": " + CustomerID + ",\n" +
+                       @"    ""billingType"": " + BillingType + ",\n" +
+                       @"    ""nextDueDate"": " + NextDueDate.ToString() + ",\n" +
+                       @"    ""value"": " + Value.ToString() + ",\n" +
+                       @"    ""cycle"": " + Cycle + ",\n" +
+                       @"    ""description"": " + Description + ",\n" +
+                       @"    ""discount"": " + "{\n" +
+                       @"       ""value"": " + DiscountValue.ToString() + ",\n" +
+                       @"       ""dueDateLimitDays"": " + DueDateLimitDays.ToString() + ",\n" +
+                       @"    },\n" +
+                       @"    ""fine"": " + "{\n" +
+                       @"       ""value"": " + FineValue.ToString() + ",\n" +
+                       @"    },\n" +
+                       @"    ""interest"": " + "{\n" +
+                       @"       ""value"": " + InterestValue.ToString() + ",\n" +
+                       @"    },\n" +
+                       @"}";
+
+            request.AddBody(body);
+
+            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = new AsaasModelCommunity.CobrancaResponse();
+
+            var response = client.Post(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            return SubscriptionsResponse.id;
         }
-        return response.Content;
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
-    public static string Asaas_SubscriptionsDelete(string Token, string CustomerID, string BillingType, DateTime DueDate, decimal Value, string Description, string DocRef, string Environment)
+    public static string Asaas_SubscriptionsDelete(string Token, string SubscriptionsID, string Environment)
     {
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-        string LinkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/subscriptions" : "https://sandbox.asaas.com/api/v3/subscriptions");
-        var client = new RestClient(LinkAsaas + PaymentsID);
-        var request = new RestRequest();
-        request.AddHeader("access_token", Token);
-        var response = client.Delete(request);
-        if (!response.IsSuccessful)
+        try
         {
-            throw new Exception(response.Content);
-        }
-        return response.Content;
-    }
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/subscriptions/" + SubscriptionsID);
 
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = new AsaasModelCommunity.CobrancaResponse();
+
+            var response = client.Delete(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            return SubscriptionsResponse.id;
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 }
