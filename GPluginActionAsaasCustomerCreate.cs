@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0001-462296E7027E}";
 
-        public override string Name => "Cadastra cliente no Assas";
+        public override string Name => "Cadastra cliente no Asaas";
 
         public override string Description => "";
 

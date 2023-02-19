@@ -25,11 +25,13 @@ namespace Gvinci.Plugin.Action
             {
                 new GPluginActionParameter() { ID = 1, Name = "Token", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 2, Name = "PaymentsID", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 3, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 4, Name = "SuscriptionsID/Content", Type = PluginActionParameterTypeEnum.STRING },
             };
         }
         public override string GetActionCall()
         {
-            string code = $"var client = GvinciAsaas.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value});";
+            string code = $"var client = GvinciAsaas.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[4].Value});";
             return code;
         }
     }

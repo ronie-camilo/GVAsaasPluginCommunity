@@ -25,12 +25,14 @@ namespace Gvinci.Plugin.Action
             _Paramiters = new List<GPluginActionParameter>()
             {
                 new GPluginActionParameter() { ID = 1, Name = "Token", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 2, Name = "PaymentsID", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 2, Name = "SuscriptionsID", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 3, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 4, Name = "SuscriptionsStatus/Content", Type = PluginActionParameterTypeEnum.STRING },
             };
         }
         public override string GetActionCall()
         {
-            string code = $"var client = GvinciAsaas.Asaas_SuscriptionsDelete({this.Parameters[0].Value}, {this.Parameters[1].Value});";
+            string code = $"var client = GvinciAsaas.Asaas_SuscriptionsDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
             return code;
         }
     }
