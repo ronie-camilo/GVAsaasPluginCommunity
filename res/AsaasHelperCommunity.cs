@@ -8,7 +8,7 @@ using static AsaasModelCommunity;
 public static class GvinciAsaasCommunity
 {
 
-    public static string Assas_CustomerCreateOrUpdate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string Environment)
+    public static string Assas_CustomerCreateOrUpdate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string Environment, string ReturnType)
     {
         try
         {
@@ -17,7 +17,6 @@ public static class GvinciAsaasCommunity
             string url = linkAsaas + "/customers?email=" + (Email);
             var client = new RestClient(url);
             var request = new RestRequest();
-            AsaasModelCommunity.CustomerResponse customerResponse = new AsaasModelCommunity.CustomerResponse();
             request.AddHeader("access_token", Token);
             IRestResponse response = client.Execute(request);
             if (response.IsSuccessful)
@@ -54,8 +53,15 @@ public static class GvinciAsaasCommunity
                 {
                     throw new Exception(response.Content);
                 }
-                customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
-                return customerResponse.id;
+
+                AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+
+                if (ReturnType == "CustomerID")
+                    return customerResponse.id;
+                else if (ReturnType == "Content")
+                    return response.Content;
+                else
+                    return customerResponse.id;
             }
             else
             {
@@ -70,11 +76,11 @@ public static class GvinciAsaasCommunity
 
     public static string Assas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string LinkAsaas, DateTime Vencimento, decimal Valor, string Descricao, string DocRef)
     {
-        var CustomerID = Assas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, LinkAsaas);
+        var CustomerID = Assas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, LinkAsaas, "CustomerID");
         return Assas_PaymentsCreate(CustomerID, LinkAsaas, Token, Vencimento, Valor, Descricao, DocRef);
     }
 
-    public static string Assas_PaymentsCreate(string CustomerID, string Environment, string Token, DateTime DueDate, decimal Value, string Description, string DocRef)
+    public static string Assas_PaymentsCreate(string CustomerID, string Environment, string Token, DateTime DueDate, decimal Value, string Description, string DocRef, string ReturnType)
     {
         try
         {
@@ -97,15 +103,23 @@ public static class GvinciAsaasCommunity
             cobrancaRequest.fine = new AsaasModelCommunity.Fine { value = 1 }; //cobranca.PercentualMulta;
             request.AddJsonBody(cobrancaRequest);
 
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
 
             var response = client.Post(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
             }
-            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
-            return PaymentsResponse.id;
+
+            AsaasModelCommunity.CustomerResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+
+            if (ReturnType == "CustomerID")
+                return PaymentsResponse.id;
+            else if (ReturnType == "Content")
+                return response.Content;
+            else
+                return PaymentsResponse.id;
+
+
         }
         catch (Exception ex)
         {
@@ -113,7 +127,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsDelete(string Token, string PaymentsID, string Environment)
+    public static string Assas_PaymentsDelete(string Token, string PaymentsID, string Environment, string ReturnType)
     {
         try
         {
@@ -124,8 +138,6 @@ public static class GvinciAsaasCommunity
             var request = new RestRequest();
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
-
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
 
             var response = client.Delete(request);
             if (!response.IsSuccessful)
@@ -133,8 +145,15 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
-            return PaymentsResponse.status;
+            AsaasModelCommunity.CustomerResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+
+            if (ReturnType == "CustomerID")
+                return PaymentsResponse.id;
+            else if (ReturnType == "Content")
+                return response.Content;
+            else
+                return PaymentsResponse.id;
+
         }
 
         catch (Exception ex)
@@ -143,7 +162,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsConsult(string Token, string PaymentsID, string Environment)
+    public static string Assas_PaymentsConsult(string Token, string PaymentsID, string Environment, string ReturnType)
     {
         try
         {
@@ -155,7 +174,6 @@ public static class GvinciAsaasCommunity
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
 
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
 
             var response = client.Post(request);
             if (!response.IsSuccessful)
@@ -163,8 +181,14 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
-            return PaymentsResponse.status;
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+
+            if (ReturnType == "PaymentsStatus")
+                return PaymentsResponse.status;
+            else if (ReturnType == "Content")
+                return response.Content;
+            else
+                return PaymentsResponse.status;
         }
 
         catch (Exception ex)
@@ -173,7 +197,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment)
+    public static string Assas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment, string ReturnType)
     {
         try
         {
@@ -192,16 +216,20 @@ public static class GvinciAsaasCommunity
 
             request.AddBody(body);
 
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = new AsaasModelCommunity.CobrancaResponse();
-
             var response = client.Post(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
             }
 
-            PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
-            return PaymentsResponse.status;
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+
+            if (ReturnType == "PaymentsStatus")
+                return PaymentsResponse.id;
+            else if (ReturnType == "Content")
+                return response.Content;
+            else
+                return PaymentsResponse.status;
         }
 
         catch (Exception ex)
@@ -211,7 +239,7 @@ public static class GvinciAsaasCommunity
 
     }
 
-    public static string Asaas_SubscriptionsCreate(string Token, string CustomerID, string BillingType, DateTime NextDueDate, decimal Value, string Cycle, string Description, decimal DiscountValue, DateTime DueDateLimitDays, decimal FineValue, decimal InterestValue, string Environment)
+    public static string Asaas_SubscriptionsCreate(string Token, string CustomerID, string BillingType, DateTime NextDueDate, decimal Value, string Cycle, string Description, decimal DiscountValue, DateTime DueDateLimitDays, decimal FineValue, decimal InterestValue, string Environment, string ReturnType)
     {
         try
         {
@@ -244,13 +272,20 @@ public static class GvinciAsaasCommunity
 
             request.AddBody(body);
 
-            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = new AsaasModelCommunity.CobrancaResponse();
-
             var response = client.Post(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
             }
+
+            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+
+            if (ReturnType == "SubscriptionsID")
+                return SubscriptionsResponse.id;
+            else if (ReturnType == "Content")
+                return response.Content;
+            else
+                return SubscriptionsResponse.id;
 
             SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
             return SubscriptionsResponse.id;
@@ -262,7 +297,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_SubscriptionsDelete(string Token, string SubscriptionsID, string Environment)
+    public static string Asaas_SubscriptionsDelete(string Token, string SubscriptionsID, string Environment, string ReturnType)
     {
         try
         {
@@ -274,16 +309,20 @@ public static class GvinciAsaasCommunity
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
 
-            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = new AsaasModelCommunity.CobrancaResponse();
-
             var response = client.Delete(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
             }
 
-            SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
-            return SubscriptionsResponse.id;
+            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+
+            if (ReturnType == "SubscriptionsID")
+                return SubscriptionsResponse.id;
+            else if (ReturnType == "Content")
+                return response.Content;
+            else
+                return SubscriptionsResponse.id;
         }
 
         catch (Exception ex)
