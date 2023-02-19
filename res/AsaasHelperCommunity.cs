@@ -8,7 +8,7 @@ using static AsaasModelCommunity;
 public static class GvinciAsaasCommunity
 {
 
-    public static string Assas_CustomerCreateOrUpdate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string Environment, string ReturnType)
+    public static string Asaas_CustomerCreateOrUpdate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string Environment, string ReturnType)
     {
         try
         {
@@ -74,9 +74,43 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string LinkAsaas, DateTime Vencimento, decimal Valor, string Descricao, string DocRef)
+    public static string Asaas_CustomerDelete(string Token, string CustomerID, string Environment, string ReturnType)
     {
-        var CustomerID = Assas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, LinkAsaas, "CustomerID");
+        try
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/payments/" + CustomerID);
+
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            var response = client.Delete(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+
+            if (ReturnType == "CustomerState")
+                return customerResponse.id;
+            else if (ReturnType == "Content")
+                return response.Content;
+            else
+                return customerResponse.state;
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public static string Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string LinkAsaas, DateTime Vencimento, decimal Valor, string Descricao, string DocRef)
+    {
+        var CustomerID = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, LinkAsaas, "CustomerID");
         return Assas_PaymentsCreate(CustomerID, LinkAsaas, Token, Vencimento, Valor, Descricao, DocRef, "PaymentsID");
     }
 
@@ -127,7 +161,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsDelete(string Token, string PaymentsID, string Environment, string ReturnType)
+    public static string Asaas_PaymentsDelete(string Token, string PaymentsID, string Environment, string ReturnType)
     {
         try
         {
@@ -162,7 +196,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsConsult(string Token, string PaymentsID, string Environment, string ReturnType)
+    public static string Asaas_PaymentsConsult(string Token, string PaymentsID, string Environment, string ReturnType)
     {
         try
         {
@@ -197,7 +231,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Assas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment, string ReturnType)
+    public static string Asaas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment, string ReturnType)
     {
         try
         {

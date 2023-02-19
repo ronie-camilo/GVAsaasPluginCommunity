@@ -32,13 +32,14 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() { ID = 7, Name = "PostalCode", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 8, Name = "AddressNumber", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 9, Name = "ExternalReference", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 10, Name = "Link Assas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 10, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 11, Name = "PaimentsID/Content", Type = PluginActionParameterTypeEnum.STRING },
             };
         }
 
         public override string GetActionCall()
         {
-            string code = $"var client = GvinciAsaas.Asaas_CustomerCreateOrUpdate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value});";
+            string code = $"var client = GvinciAsaas.Asaas_CustomerCreateOrUpdate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value}, {this.Parameters[10].Value});";
             return code;
         }
 
