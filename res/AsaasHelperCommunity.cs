@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Net;
-using static AsaasModelCommunity;
 
 public static class GvinciAsaasCommunity
 {
@@ -108,20 +107,20 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, DateTime Vencimento, decimal Valor, string Descricao, string DocRef, string Environment, string ReturnType)
+    public static string Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, DateTime Vencimento, decimal Valor, string Descricao, string DocRef, string InterestValue, string FineValue, string Environment, string ReturnType)
     {
         var CustomerID = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, Environment, "CustomerID");
         if (ReturnType == "PaymentsID")
-            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, Environment, "PaymentsID");
+            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
         else if (ReturnType == "Content")
-            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, Environment, "Content");
+            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "Content");
         else
-            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, Environment, "PaymentsID");
+            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
 
 
     }
 
-    public static string Assas_PaymentsCreate(string CustomerID, string Token, DateTime DueDate, decimal Value, string Description, string DocRef, string Environment, string ReturnType)
+    public static string Assas_PaymentsCreate(string CustomerID, string Token, DateTime DueDate, decimal Value, string Description, string DocRef, string InterestValue, string FineValue, string Environment, string ReturnType)
     {
         try
         {
@@ -140,8 +139,8 @@ public static class GvinciAsaasCommunity
             cobrancaRequest.description = Description;
             cobrancaRequest.externalReference = DocRef;
             cobrancaRequest.billingType = "BOLETO";
-            cobrancaRequest.interest = new AsaasModelCommunity.Interest { value = 2 }; // cobranca.PercentualJurosMes;
-            cobrancaRequest.fine = new AsaasModelCommunity.Fine { value = 1 }; //cobranca.PercentualMulta;
+            cobrancaRequest.interest = new AsaasModelCommunity.Interest { value = int.Parse(InterestValue) }; // cobranca.PercentualJurosMes;
+            cobrancaRequest.fine = new AsaasModelCommunity.Fine { value = int.Parse(FineValue) }; //cobranca.PercentualMulta;
             request.AddJsonBody(cobrancaRequest);
 
 
@@ -151,7 +150,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CustomerResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
 
             if (ReturnType == "PaymentsID")
                 return PaymentsResponse.id;
@@ -186,7 +185,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CustomerResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
 
             if (ReturnType == "PaymentsID")
                 return PaymentsResponse.id;

@@ -25,38 +25,21 @@ namespace Gvinci.Plugin.Action
             _Paramiters = new List<GPluginActionParameter>()
             {
                 new GPluginActionParameter() { ID = 1, Name = "Token", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 2, Name = "Name", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 3, Name = "CpfCnpj", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 4, Name = "Email", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 5, Name = "Phone", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 6, Name = "Mobilephone", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 7, Name = "PostalCode", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 8, Name = "AddressNumber", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 9, Name = "ExternalReference", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 10, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 11, Name = "PaimentsID/Content", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 2, Name = "CustomerID", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 3, Name = "DueDate", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 4, Name = "Value", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 5, Name = "Description", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 6, Name = "DocRef", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 7, Name = "Interest Value", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 8, Name = "Fine Value", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 9, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 10, Name = "PaimentsID/Content", Type = PluginActionParameterTypeEnum.STRING },
             };
         }
 
-        Asaas_PaymentsCreate(
-            string Token,
-            string Name, 
-            string CpfCnpj,
-            string Email, 
-            string Phone, 
-            string Mobilephone, 
-            string PostalCode, 
-            string AddressNumber, 
-            string ExternalReference, 
-            DateTime Vencimento, 
-            decimal Valor, 
-            string Descricao, 
-            string DocRef,
-            string LinkAsaas, 
-            string ReturnType)
         public override string GetActionCall()
         {
-            string code = $"var client = GvinciAsaas.Asaas_CustomerCreateOrUpdate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value}, {this.Parameters[10].Value});";
+            string code = $"var client = GvinciAsaas.Asaas_PaymentsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value});";
             return code;
         }
 
