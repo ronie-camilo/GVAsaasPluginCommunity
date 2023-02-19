@@ -7,7 +7,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0003-462296E7027E}";
 
-        public override string Name => "Cadastra boleto no Asaas";
+        public override string Name => "Cadastra boleto";
 
         public override string Description => "";
 
@@ -39,7 +39,7 @@ namespace Gvinci.Plugin.Action
 
         public override string GetActionCall()
         {
-            string code = $"var client = GvinciAsaas.Asaas_PaymentsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value});";
+            string code = $"var client = GPluginAssasCommunity.Asaas_PaymentsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value});";
             return code;
         }
 

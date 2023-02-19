@@ -6,9 +6,9 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0002-462296E7027E}";
 
-        public override string Name => "Deleta cliente no Asaas";
+        public override string Name => "Deleta cliente";
 
-        public override string Description => "";
+        public override string Description => "Deletar cliente no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
 
@@ -32,7 +32,7 @@ namespace Gvinci.Plugin.Action
 
         public override string GetActionCall()
         {
-            string code = $"var client = GvinciAsaas.Asaas_CustomerDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
+            string code = $"var client = GPluginAssasCommunity.Asaas_CustomerDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
             return code;
         }
 

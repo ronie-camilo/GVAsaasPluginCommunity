@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0006-462296E7027E}";
 
-        public override string Name => "Cadastra assinatura no Assas";
+        public override string Name => "Cadastra assinatura";
 
         public override string Description => "";
 
@@ -31,7 +31,7 @@ namespace Gvinci.Plugin.Action
         }
         public override string GetActionCall()
         {
-            string code = $"var client = GvinciAsaas.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[4].Value});";
+            string code = $"var client = GPluginAssasCommunity.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
             return code;
         }
     }
