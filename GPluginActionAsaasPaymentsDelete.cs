@@ -33,7 +33,7 @@ namespace Gvinci.Plugin.Action
 
         public override string GetActionCall()
         {
-            string code = $"var client = GPluginAssasCommunity.Asaas_PaymentsDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
+            string code = $"var client = GvinciAsaasCommunity.Asaas_PaymentsDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
             return code;
         }
     }

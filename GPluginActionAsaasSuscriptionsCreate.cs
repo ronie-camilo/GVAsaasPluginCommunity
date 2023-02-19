@@ -31,7 +31,7 @@ namespace Gvinci.Plugin.Action
         }
         public override string GetActionCall()
         {
-            string code = $"var client = GPluginAssasCommunity.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
+            string code = $"var client = GvinciAsaasCommunity.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
             return code;
         }
     }
