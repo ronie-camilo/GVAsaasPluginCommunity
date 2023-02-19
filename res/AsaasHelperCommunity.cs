@@ -77,7 +77,7 @@ public static class GvinciAsaasCommunity
     public static string Assas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string LinkAsaas, DateTime Vencimento, decimal Valor, string Descricao, string DocRef)
     {
         var CustomerID = Assas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, LinkAsaas, "CustomerID");
-        return Assas_PaymentsCreate(CustomerID, LinkAsaas, Token, Vencimento, Valor, Descricao, DocRef);
+        return Assas_PaymentsCreate(CustomerID, LinkAsaas, Token, Vencimento, Valor, Descricao, DocRef, "PaymentsID");
     }
 
     public static string Assas_PaymentsCreate(string CustomerID, string Environment, string Token, DateTime DueDate, decimal Value, string Description, string DocRef, string ReturnType)
@@ -112,7 +112,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.CustomerResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
 
-            if (ReturnType == "CustomerID")
+            if (ReturnType == "PaymentsID")
                 return PaymentsResponse.id;
             else if (ReturnType == "Content")
                 return response.Content;
@@ -147,7 +147,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.CustomerResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
 
-            if (ReturnType == "CustomerID")
+            if (ReturnType == "PaymentsID")
                 return PaymentsResponse.id;
             else if (ReturnType == "Content")
                 return response.Content;
@@ -225,7 +225,7 @@ public static class GvinciAsaasCommunity
             AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
 
             if (ReturnType == "PaymentsStatus")
-                return PaymentsResponse.id;
+                return PaymentsResponse.status;
             else if (ReturnType == "Content")
                 return response.Content;
             else
