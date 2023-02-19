@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Gvinci.Plugin.Action
 {
@@ -37,6 +38,22 @@ namespace Gvinci.Plugin.Action
             };
         }
 
+        Asaas_PaymentsCreate(
+            string Token,
+            string Name, 
+            string CpfCnpj,
+            string Email, 
+            string Phone, 
+            string Mobilephone, 
+            string PostalCode, 
+            string AddressNumber, 
+            string ExternalReference, 
+            DateTime Vencimento, 
+            decimal Valor, 
+            string Descricao, 
+            string DocRef,
+            string LinkAsaas, 
+            string ReturnType)
         public override string GetActionCall()
         {
             string code = $"var client = GvinciAsaas.Asaas_CustomerCreateOrUpdate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value}, {this.Parameters[10].Value});";

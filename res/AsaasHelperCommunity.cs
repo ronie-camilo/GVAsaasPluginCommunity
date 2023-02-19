@@ -108,13 +108,20 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string LinkAsaas, DateTime Vencimento, decimal Valor, string Descricao, string DocRef)
+    public static string Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, DateTime Vencimento, decimal Valor, string Descricao, string DocRef, string Environment, string ReturnType)
     {
-        var CustomerID = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, LinkAsaas, "CustomerID");
-        return Assas_PaymentsCreate(CustomerID, LinkAsaas, Token, Vencimento, Valor, Descricao, DocRef, "PaymentsID");
+        var CustomerID = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, Environment, "CustomerID");
+        if (ReturnType == "PaymentsID")
+            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, Environment, "PaymentsID");
+        else if (ReturnType == "Content")
+            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, Environment, "Content");
+        else
+            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, Environment, "PaymentsID");
+
+
     }
 
-    public static string Assas_PaymentsCreate(string CustomerID, string Environment, string Token, DateTime DueDate, decimal Value, string Description, string DocRef, string ReturnType)
+    public static string Assas_PaymentsCreate(string CustomerID, string Token, DateTime DueDate, decimal Value, string Description, string DocRef, string Environment, string ReturnType)
     {
         try
         {
