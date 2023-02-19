@@ -7,9 +7,9 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0003-462296E7027E}";
 
-        public override string Name => "Cadastra boleto";
+        public override string Name => "Cadastrar boleto";
 
-        public override string Description => "";
+        public override string Description => "Cadastrar boleto no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
 

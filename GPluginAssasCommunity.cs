@@ -36,7 +36,7 @@ namespace Gvinci.Plugin.Action
             return new List<GPluginDependency>()
             {
                 new GPluginDependency() { FileName = "AsaasHelperCommunity.cs", DestinationRelativePath = "App_Code", AllowReplace = true },
-                new GPluginDependency() { FileName = "AsassModelCommunity.cs", DestinationRelativePath = "App_Code", AllowReplace = true },
+                new GPluginDependency() { FileName = "AsaasModelCommunity.cs", DestinationRelativePath = "App_Code", AllowReplace = true },
                 new GPluginDependency() { FileName = "RestSharp.dll", DestinationRelativePath = "bin", AllowReplace = true }
             };
         }

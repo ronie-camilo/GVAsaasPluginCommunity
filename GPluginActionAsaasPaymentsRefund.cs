@@ -8,7 +8,7 @@ namespace Gvinci.Plugin.Action
 
         public override string Name => "Estornar boleto";
 
-        public override string Description => "";
+        public override string Description => "Estornar boletoo no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
 

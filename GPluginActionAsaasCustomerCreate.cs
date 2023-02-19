@@ -8,7 +8,7 @@ namespace Gvinci.Plugin.Action
 
         public override string Name => "Cadastrar cliente";
 
-        public override string Description => "";
+        public override string Description => "Cadastrar cliente no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
 
