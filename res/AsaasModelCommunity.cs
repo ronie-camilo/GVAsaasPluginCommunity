@@ -7,21 +7,22 @@ public class AsaasModelCommunity
     {
         public string id { get; set; }
         public string name { get; set; }
+        public string cpfCnpj { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
         public string mobilePhone { get; set; }
-        public string cpfCnpj { get; set; }
-        public string postalCode { get; set; }
         public string address { get; set; }
         public string addressNumber { get; set; }
         public string complement { get; set; }
         public string province { get; set; }
+        public string postalCode { get; set; }
         public string externalReference { get; set; }
         public bool notificationDisabled { get; set; }
         public string additionalEmails { get; set; }
         public string municipalInscription { get; set; }
         public string stateInscription { get; set; }
         public string observations { get; set; }
+        public string groupName { get; set; }
     }
 
     public class CustomerResponse
@@ -71,7 +72,7 @@ public class AsaasModelCommunity
         public string externalReference { get; set; }
     }
 
-    public class CobrancaBoletoPixRequest : PaymentsRequest
+    public class PaymentsBillingPixRequest : PaymentsRequest
     {
         public Discount discount { get; set; }
         public Fine fine { get; set; }
@@ -80,11 +81,12 @@ public class AsaasModelCommunity
         public string creditCarDtoken { get; set; }
     }
 
-    public class CobrancaCartaoRequest : PaymentsRequest
+    public class PaymentsCreditCardRequest : PaymentsRequest
     {
         public CreditCard creditCard { get; set; }
         public CreditCardHolderInfo creditCardHolderInfo { get; set; }
         public string creditCarDtoken { get; set; }
+        public string remoteIp { get; set; }
     }
 
     public class CreditCard
@@ -108,7 +110,7 @@ public class AsaasModelCommunity
         public string mobilePhone { get; set; }
     }
 
-    public class CobrancaResponse
+    public class PaymentsResponse
     {
         public string @object { get; set; }
         public string id { get; set; }
@@ -119,6 +121,7 @@ public class AsaasModelCommunity
         public decimal? value { get; set; }
         public decimal? netValue { get; set; }
         public string billingType { get; set; }
+        public string canBePaidAfterDueDate { get; set; }
         public object pixTransaction { get; set; }
         public string status { get; set; }
         public string description { get; set; }
@@ -137,6 +140,7 @@ public class AsaasModelCommunity
         public bool deleted { get; set; }
         public bool postalService { get; set; }
         public bool anticipated { get; set; }
+        public bool anticipable { get; set; }
         public CreditCardResponse creditCard { get; set; }
 
         //Erros

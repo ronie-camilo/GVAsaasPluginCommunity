@@ -131,7 +131,7 @@ public static class GvinciAsaasCommunity
             request.AddHeader("access_token", Token);
             request.AddHeader("Content-Type", "application/json");
 
-            var cobrancaRequest = new AsaasModelCommunity.CobrancaBoletoPixRequest();
+            var cobrancaRequest = new AsaasModelCommunity.PaymentsBillingPixRequest();
             cobrancaRequest.customer = CustomerID;
             cobrancaRequest.dueDate = DueDate.ToString("yyyy-MM-dd");
             cobrancaRequest.value = (Decimal)Value;
@@ -149,7 +149,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
             if (ReturnType == "PaymentsID")
                 return PaymentsResponse.id;
@@ -184,7 +184,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
             if (ReturnType == "PaymentsID")
                 return PaymentsResponse.id;
@@ -220,7 +220,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
             if (ReturnType == "PaymentsStatus")
                 return PaymentsResponse.status;
@@ -261,7 +261,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CobrancaResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
             if (ReturnType == "PaymentsStatus")
                 return PaymentsResponse.status;
@@ -317,7 +317,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            AsaasModelCommunity.PaymentsResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
             if (ReturnType == "SubscriptionsID")
                 return SubscriptionsResponse.id;
@@ -326,7 +326,7 @@ public static class GvinciAsaasCommunity
             else
                 return SubscriptionsResponse.id;
 
-            SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
             return SubscriptionsResponse.id;
         }
 
@@ -354,7 +354,7 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CobrancaResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CobrancaResponse>(response.Content);
+            AsaasModelCommunity.PaymentsResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
             if (ReturnType == "SubscriptionsID")
                 return SubscriptionsResponse.id;
