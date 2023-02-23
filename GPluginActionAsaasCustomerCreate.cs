@@ -23,17 +23,17 @@ namespace Gvinci.Plugin.Action
         {
             _Paramiters= new List<GPluginActionParameter>()
             {
-                new GPluginActionParameter() { ID = 1, Name = "Token", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 2, Name = "Name", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 3, Name = "CpfCnpj", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 4, Name = "Email", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 5, Name = "Phone", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 6, Name = "Mobilephone", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 7, Name = "PostalCode", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 8, Name = "AddressNumber", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 9, Name = "ExternalReference", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 1, Name = "Token Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 2, Name = "Nome do cliente", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 3, Name = "Cpf/Cnpj", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 4, Name = "Emdereço de e-mail", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 5, Name = "Telefone", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 6, Name = "Celular", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 7, Name = "Cep", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 8, Name = "Número", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 9, Name = "Referencia externa", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 10, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 11, Name = "CustomerID/Content", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 11, Name = "ID do cliente/Conteudo do retorno", Type = PluginActionParameterTypeEnum.STRING },
             };
         }
 

@@ -7,9 +7,9 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0006-462296E7027E}";
 
-        public override string Name => "Cadastrar assinatura";
+        public override string Name => "Emitir assinatura";
 
-        public override string Description => "Cadastrar assinatura no Asaas";
+        public override string Description => "Emitir assinatura no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
 
@@ -24,19 +24,19 @@ namespace Gvinci.Plugin.Action
         {
             _Paramiters = new List<GPluginActionParameter>()
             {
-                new GPluginActionParameter() { ID = 1, Name = "Token", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 2, Name = "CustomerID", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 3, Name = "BillingType", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 4, Name = "NextDueDate", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 5, Name = "Value", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 6, Name = "Cycle", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 7, Name = "Description", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 8, Name = "DiscountValue", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 9, Name = "DueDateLimitDays", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 10, Name = "FineValue", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 11, Name = "InterestValue", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 1, Name = "Token Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 2, Name = "ID do cliente", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 3, Name = "Forma de pagamento", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 4, Name = "Vencimento da próxima mensalidade", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 5, Name = "Valor da assinatura", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 6, Name = "Periodicidade da cobrança", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 7, Name = "Descrição da assinatura", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 8, Name = "Valor de desconto", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 9, Name = "Dias antes do vencimento para aplicar desconto", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 10, Name = "Percentual de multa", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 11, Name = "Percentual de juros", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 12, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 13, Name = "SuscriptionsID/Content", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 13, Name = "ID da assinatura/Conteudo do retorno", Type = PluginActionParameterTypeEnum.STRING },
             };
         }
 

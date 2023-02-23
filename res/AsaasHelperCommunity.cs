@@ -110,17 +110,17 @@ public static class GvinciAsaasCommunity
     {
         var CustomerID = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, Environment, "CustomerID");
         if (ReturnType == "PaymentsID")
-            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
+            return Asaas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
         else if (ReturnType == "Content")
-            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "Content");
+            return Asaas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "Content");
         else
-            return Assas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
+            return Asaas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
 
 
     }
 
-    public static string Assas_PaymentsCreate(string CustomerID, string Token, DateTime DueDate, decimal Value, string Description, string DocRef, string InterestValue, string FineValue, string Environment, string ReturnType)
-    {
+    public static string Asaas_PaymentsCreate(string Token, string CustomerID, DateTime DueDate, decimal Value, string Description, string DocRef, string InterestValue, string FineValue, string Environment, string ReturnType)
+    {                  //Asaas_PaymentsCreate((Access_Token_AsaasField).ToString(), (Customer_IDField).ToString(), Ultima_AlteracaoField, 500, "Teste de Boleto", "Teste de Boleto Ref", "0", "0", "S", "Content");
         try
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
