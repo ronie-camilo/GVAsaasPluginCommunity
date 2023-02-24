@@ -57,6 +57,7 @@ public class AsaasModelCommunity
         public int? city { get; set; }
         public string state { get; set; }
         public string country { get; set; }
+        public string content { get; set; }
 
         //Erros
         public List<Error> errors { get; set; }

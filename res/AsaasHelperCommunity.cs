@@ -6,7 +6,7 @@ using System.Net;
 public static class GvinciAsaasCommunity
 {
 
-    public static string Asaas_CustomerCreateOrUpdate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string Environment, string ReturnType)
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerCreateOrUpdate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string Environment)
     {
         try
         {
@@ -54,12 +54,7 @@ public static class GvinciAsaasCommunity
 
                 AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
 
-                if (ReturnType == "CustomerID")
-                    return customerResponse.id;
-                else if (ReturnType == "Content")
-                    return response.Content;
-                else
-                    return customerResponse.id;
+                return customerResponse;
             }
             else
             {
@@ -72,7 +67,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_CustomerDelete(string Token, string CustomerID, string Environment, string ReturnType)
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerDelete(string Token, string CustomerID, string Environment)
     {
         try
         {
@@ -92,12 +87,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
 
-            if (ReturnType == "CustomerState")
-                return customerResponse.id;
-            else if (ReturnType == "Content")
-                return response.Content;
-            else
-                return customerResponse.state;
+            return customerResponse;
         }
 
         catch (Exception ex)
@@ -106,21 +96,16 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, DateTime Vencimento, decimal Valor, string Descricao, string DocRef, string InterestValue, string FineValue, string Environment, string ReturnType)
+    public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, DateTime Vencimento, decimal Valor, string Descricao, string DocRef, string InterestValue, string FineValue, string Environment)
     {
-        var CustomerID = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, Environment, "CustomerID");
-        if (ReturnType == "PaymentsID")
-            return Asaas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
-        else if (ReturnType == "Content")
-            return Asaas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "Content");
-        else
-            return Asaas_PaymentsCreate(CustomerID, Token, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment, "PaymentsID");
+        var customerResponse = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, Environment);
+        return Asaas_PaymentsCreate(Token, customerResponse.id, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment);
 
 
     }
 
-    public static string Asaas_PaymentsCreate(string Token, string CustomerID, DateTime DueDate, decimal Value, string Description, string DocRef, string InterestValue, string FineValue, string Environment, string ReturnType)
-    {                  //Asaas_PaymentsCreate((Access_Token_AsaasField).ToString(), (Customer_IDField).ToString(), Ultima_AlteracaoField, 500, "Teste de Boleto", "Teste de Boleto Ref", "0", "0", "S", "Content");
+    public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsCreate(string Token, string CustomerID, DateTime DueDate, decimal Value, string Description, string DocRef, string InterestValue, string FineValue, string Environment)
+    {
         try
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
@@ -151,14 +136,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
-            if (ReturnType == "PaymentsID")
-                return PaymentsResponse.id;
-            else if (ReturnType == "Content")
-                return response.Content;
-            else
-                return PaymentsResponse.id;
-
-
+            return PaymentsResponse;
         }
         catch (Exception ex)
         {
@@ -166,7 +144,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_PaymentsDelete(string Token, string PaymentsID, string Environment, string ReturnType)
+    public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsDelete(string Token, string PaymentsID, string Environment, string ReturnType)
     {
         try
         {
@@ -186,13 +164,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
-            if (ReturnType == "PaymentsID")
-                return PaymentsResponse.id;
-            else if (ReturnType == "Content")
-                return response.Content;
-            else
-                return PaymentsResponse.id;
-
+            return PaymentsResponse;
         }
 
         catch (Exception ex)
@@ -201,7 +173,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_PaymentsConsult(string Token, string PaymentsID, string Environment, string ReturnType)
+    public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsConsult(string Token, string PaymentsID, string Environment, string ReturnType)
     {
         try
         {
@@ -222,12 +194,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
-            if (ReturnType == "PaymentsStatus")
-                return PaymentsResponse.status;
-            else if (ReturnType == "Content")
-                return response.Content;
-            else
-                return PaymentsResponse.status;
+            return PaymentsResponse;
         }
 
         catch (Exception ex)
@@ -236,7 +203,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment, string ReturnType)
+    public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment, string ReturnType)
     {
         try
         {
@@ -263,12 +230,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.PaymentsResponse PaymentsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
-            if (ReturnType == "PaymentsStatus")
-                return PaymentsResponse.status;
-            else if (ReturnType == "Content")
-                return response.Content;
-            else
-                return PaymentsResponse.status;
+            return PaymentsResponse;
         }
 
         catch (Exception ex)
@@ -278,7 +240,7 @@ public static class GvinciAsaasCommunity
 
     }
 
-    public static string Asaas_SubscriptionsCreate(string Token, string CustomerID, string BillingType, DateTime NextDueDate, decimal Value, string Cycle, string Description, decimal DiscountValue, DateTime DueDateLimitDays, decimal FineValue, decimal InterestValue, string Environment, string ReturnType)
+    public static AsaasModelCommunity.PaymentsResponse Asaas_SubscriptionsCreate(string Token, string CustomerID, string BillingType, DateTime NextDueDate, decimal Value, string Cycle, string Description, decimal DiscountValue, DateTime DueDateLimitDays, decimal FineValue, decimal InterestValue, string Environment, string ReturnType)
     {
         try
         {
@@ -319,15 +281,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.PaymentsResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
-            if (ReturnType == "SubscriptionsID")
-                return SubscriptionsResponse.id;
-            else if (ReturnType == "Content")
-                return response.Content;
-            else
-                return SubscriptionsResponse.id;
-
-            SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
-            return SubscriptionsResponse.id;
+            return SubscriptionsResponse;
         }
 
         catch (Exception ex)
@@ -336,7 +290,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static string Asaas_SubscriptionsDelete(string Token, string SubscriptionsID, string Environment, string ReturnType)
+    public static AsaasModelCommunity.PaymentsResponse Asaas_SubscriptionsDelete(string Token, string SubscriptionsID, string Environment, string ReturnType)
     {
         try
         {
@@ -356,12 +310,7 @@ public static class GvinciAsaasCommunity
 
             AsaasModelCommunity.PaymentsResponse SubscriptionsResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.PaymentsResponse>(response.Content);
 
-            if (ReturnType == "SubscriptionsID")
-                return SubscriptionsResponse.id;
-            else if (ReturnType == "Content")
-                return response.Content;
-            else
-                return SubscriptionsResponse.id;
+            return SubscriptionsResponse;
         }
 
         catch (Exception ex)

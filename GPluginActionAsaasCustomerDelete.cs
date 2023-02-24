@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Gvinci.Plugin.Action
 {
@@ -26,15 +27,22 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() { ID = 1, Name = "Token Asaas", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 2, Name = "ID do cliente", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 3, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 4, Name = "Estado do cliente/Conteudo do retorno", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 12, Name = "Retorno - Estado de deleção do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() { ID = 12, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
             };
         }
 
-        public override string GetActionCall()
+        public override void WriteActionCall(StringBuilder Builder, int Identation, int ActionSequence)
         {
-            string code = $"var client = GvinciAsaasCommunity.Asaas_CustomerDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value});";
-            return code;
+            IGPluginControl CustomerState = this.Parameters[12].Value as IGPluginControl;
+            IGPluginControl Content = this.Parameters[12].Value as IGPluginControl;
+
+            string indentStr = new string('\t', Identation);
+            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value});");
+            Builder.AppendLine(indentStr + CustomerState.Name + ".Text = response.deleted");
+            Builder.AppendLine(indentStr + Content.Name + ".Text = response.content");
         }
 
     }
+
 }
