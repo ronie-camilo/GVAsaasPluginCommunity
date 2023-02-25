@@ -32,7 +32,7 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() { ID = 6, Name = "Documento de referencia", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 7, Name = "Percentual de juros", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 8, Name = "Percentual de multa", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 9, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 9, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 10, Name = "Retorno do ID da Cobrança", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
             };
         }

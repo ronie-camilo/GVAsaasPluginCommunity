@@ -26,16 +26,16 @@ namespace Gvinci.Plugin.Action
             {
                 new GPluginActionParameter() { ID = 1, Name = "Token Asaas", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 2, Name = "ID do cliente", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 3, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 12, Name = "Retorno - Estado de deleção do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
-                new GPluginActionParameter() { ID = 12, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() { ID = 3, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 4, Name = "Retorno - Estado da deleção do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() { ID = 5, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
             };
         }
 
         public override void WriteActionCall(StringBuilder Builder, int Identation, int ActionSequence)
         {
-            IGPluginControl CustomerState = this.Parameters[12].Value as IGPluginControl;
-            IGPluginControl Content = this.Parameters[12].Value as IGPluginControl;
+            IGPluginControl CustomerState = this.Parameters[4].Value as IGPluginControl;
+            IGPluginControl Content = this.Parameters[5].Value as IGPluginControl;
 
             string indentStr = new string('\t', Identation);
             Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value});");

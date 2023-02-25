@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Gvinci.Plugin.Action
 {
@@ -35,15 +36,23 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() { ID = 9, Name = "Dias antes do vencimento para aplicar desconto", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 10, Name = "Percentual de multa", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 11, Name = "Percentual de juros", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 12, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 13, Name = "ID da assinatura/Conteudo do retorno", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 12, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 13, Name = "Retorno - ID da cobrança", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() { ID = 14, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
             };
         }
 
-        public override string GetActionCall()
+        public override void WriteActionCall(StringBuilder Builder, int Identation, int ActionSequence)
         {
-            string code = $"var client = GvinciAsaasCommunity.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value}, {this.Parameters[10].Value}, {this.Parameters[11].Value}, {this.Parameters[12].Value});";
-            return code;
+            IGPluginControl PaymentsID = this.Parameters[13].Value as IGPluginControl;
+            IGPluginControl Content = this.Parameters[14].Value as IGPluginControl;
+
+            string indentStr = new string('\t', Identation);
+            Builder.AppendLine(indentStr + $"var client = GvinciAsaasCommunity.SuscriptionsCreate({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value}, {this.Parameters[3].Value}, {this.Parameters[4].Value}, {this.Parameters[5].Value}, {this.Parameters[6].Value}, {this.Parameters[7].Value}, {this.Parameters[8].Value}, {this.Parameters[9].Value}, {this.Parameters[10].Value}, {this.Parameters[11].Value});";
+            Builder.AppendLine(indentStr + PaymentsID.Name + ".Text = response.id");
+            Builder.AppendLine(indentStr + Content.Name + ".Text = response.content");
         }
+
     }
+
 }

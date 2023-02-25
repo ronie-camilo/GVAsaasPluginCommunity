@@ -26,7 +26,7 @@ namespace Gvinci.Plugin.Action
             {
                 new GPluginActionParameter() { ID = 1, Name = "Token Asaas", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 2, Name = "ID da Cobrança", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 3, Name = "Ambiente Asaas", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() { ID = 3, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 4, Name = "Estado da Cobrança/Conteudo do retorno", Type = PluginActionParameterTypeEnum.STRING },
             };
         }
