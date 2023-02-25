@@ -39,7 +39,7 @@ namespace Gvinci.Plugin.Action
             IGPluginControl Content = this.Parameters[5].Value as IGPluginControl;
 
             string indentStr = new string('\t', Identation);
-            Builder.AppendLine(indentStr + $"var client = GvinciAsaasCommunity.Asaas_SuscriptionsDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value});";
+            Builder.AppendLine(indentStr + $"var client = GvinciAsaasCommunity.Asaas_SuscriptionsDelete({this.Parameters[0].Value}, {this.Parameters[1].Value}, {this.Parameters[2].Value});");
             Builder.AppendLine(indentStr + SuscriptionsState.Name + ".Text = response.deleted");
             Builder.AppendLine(indentStr + Content.Name + ".Text = response.content");
         }
