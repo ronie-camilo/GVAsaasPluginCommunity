@@ -80,7 +80,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GPluginActionAsaasCustomerDelete.cs" />
+    <Compile Include="GPluginActionAsaasCustomerCreateOrUpdate.cs" />
+    <Compile Include="GPluginActionAsaasCustomerRemove.cs" />
+    <Compile Include="GPluginActionAsaasCustomerRestore.cs" />
+    <Compile Include="GPluginActionAsaasCustomerSearch.cs" />
     <Compile Include="GPluginActionAsaasPaymentsCreate.cs" />
     <Compile Include="GPluginActionAsaasCustomerCreate.cs" />
     <Compile Include="GPluginActionAsaasPaymentsDelete.cs" />

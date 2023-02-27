@@ -3,9 +3,9 @@ using System.Text;
 
 namespace Gvinci.Plugin.Action
 {
-    internal class GPluginActionAsaasCustomerDelete : GPluginAction
+    internal class GPluginActionAsaasCustomerRestore : GPluginAction
     {
-        public override string ID => "{C6926C40-F906-4BF9-0002-462296E7027E}";
+        public override string ID => "{C6926C40-F906-4BF9-0004-462296E7027E}";
 
         public override string Name => "Deletar cliente";
 
@@ -20,7 +20,7 @@ namespace Gvinci.Plugin.Action
                 return _Paramiters;
             }
         }
-        public GPluginActionAsaasCustomerDelete(IGPlugin Plugin) : base(Plugin)
+        public GPluginActionAsaasCustomerRestore(IGPlugin Plugin) : base(Plugin)
         {
             _Paramiters = new List<GPluginActionParameter>()
             {

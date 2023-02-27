@@ -1,73 +1,123 @@
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 public static class GvinciAsaasCommunity
 {
-
-    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerCreateOrUpdate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, string Environment)
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerCreate(string Token = "", string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "", string Environment = "S")
     {
         try
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            string linkAsaas = (Environment == "P" ? "https://www.asaas.com/api/v3/" : "https://sandbox.asaas.com/api/v3/");
-            string url = linkAsaas + "/customers?email=" + (Email);
-            var client = new RestClient(url);
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+
+            var client = new RestClient(LinkAsaas + "/api/v3/customers");
+
             var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
-            IRestResponse response = client.Execute(request);
-            if (response.IsSuccessful)
-            {
-                AsaasModelCommunity.CustomerResponseList listCustomers = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content);
-                if (listCustomers == null)
-                {
-                    throw new Exception("Erro - " + response.ErrorMessage); ;
-                }
-                if (listCustomers.totalCount == 0)
-                {
-                    request = new RestRequest(Method.POST);
-                    url = linkAsaas + "/customers";
-                }
-                else
-                {
-                    request = new RestRequest(Method.PUT);
-                }
-                request.AddHeader("access_token", Token);
-                client = new RestClient(url);
-                var customerRequest = new AsaasModelCommunity.CustomerRequest();
-                if (listCustomers.totalCount > 0) customerRequest.id = listCustomers.data[0].id;
-                customerRequest.name = Name;
-                customerRequest.cpfCnpj = CpfCnpj;
-                customerRequest.email = Email;
-                customerRequest.phone = Phone;
-                customerRequest.mobilePhone = Mobilephone;
-                customerRequest.addressNumber = AddressNumber;
-                customerRequest.postalCode = PostalCode;
-                customerRequest.externalReference = ExternalReference;
-                request.AddJsonBody(customerRequest);
-                response = client.Execute(request);
-                if (!response.IsSuccessful)
-                {
-                    throw new Exception(response.Content);
-                }
 
-                AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
-
-                return customerResponse;
-            }
-            else
+            var customerRequest = new AsaasModelCommunity.CustomerRequest();
+            customerRequest.name = Name;
+            customerRequest.cpfCnpj = CpfCnpj;
+            customerRequest.email = Email;
+            customerRequest.phone = Phone;
+            customerRequest.mobilePhone = Mobilephone;
+            customerRequest.address = Address;
+            customerRequest.addressNumber = AddressNumber;
+            customerRequest.complement = Complement;
+            customerRequest.province = Province;
+            customerRequest.postalCode = PostalCode;
+            customerRequest.externalReference = ExternalReference;
+            customerRequest.notificationDisabled = NotificationDisabled;
+            customerRequest.additionalEmails = AdditionalEmails;
+            customerRequest.municipalInscription = MunicipalInscription;
+            customerRequest.stateInscription = StateInscription;
+            customerRequest.observations = Observations;
+            customerRequest.groupName = GroupName;
+            request.AddJsonBody(customerRequest);
+            
+            var response = client.Post(request);
+            if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
             }
+
+            AsaasModelCommunity.CustomerResponse Customer = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            Customer.content = response.Content;
+            return Customer;
         }
+
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
     }
 
-    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerDelete(string Token, string CustomerID, string Environment)
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerCreateOrUpdate(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "", string Environment = "S")
+    {
+        try
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+
+            string url = LinkAsaas;
+
+            if (CustomerID != "")
+            {
+                url += "/api/v3/customers/" + CustomerID;
+            }
+            else
+            {
+                AsaasModelCommunity.CustomerResponseList ListCustomers = Asaas_CustomerSearch(Token: Token, Name: Name, Email: Email, CpfCnpj: CpfCnpj, GroupName: GroupName, ExternalReference: ExternalReference, OffSet: 0, Limit: 1, Environment: Environment);
+                url += (ListCustomers.totalCount > 0 ? "/api/v3/customers/" + ListCustomers.data[0].id : "/api/v3/customers");
+            }
+
+            var client = new RestClient(url);
+
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            var customerRequest = new AsaasModelCommunity.CustomerRequest();
+            customerRequest.name = Name;
+            customerRequest.cpfCnpj = CpfCnpj;
+            customerRequest.email = Email;
+            customerRequest.phone = Phone;
+            customerRequest.mobilePhone = Mobilephone;
+            customerRequest.address = Address;
+            customerRequest.addressNumber = AddressNumber;
+            customerRequest.complement = Complement;
+            customerRequest.province = Province;
+            customerRequest.postalCode = PostalCode;
+            customerRequest.externalReference = ExternalReference;
+            customerRequest.notificationDisabled = NotificationDisabled;
+            customerRequest.additionalEmails = AdditionalEmails;
+            customerRequest.municipalInscription = MunicipalInscription;
+            customerRequest.stateInscription = StateInscription;
+            customerRequest.observations = Observations;
+            customerRequest.groupName = GroupName;
+            request.AddJsonBody(customerRequest);
+
+            var response = client.Post(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            AsaasModelCommunity.CustomerResponse Customer = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            return Customer;
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerDelete(string Token = "", string CustomerID = "", string Environment = "S")
     {
         try
         {
@@ -88,6 +138,84 @@ public static class GvinciAsaasCommunity
             AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
 
             return customerResponse;
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public static AsaasModelCommunity.CustomerResponseList Asaas_CustomerSearch(string Token = "", string CustomerID = "", string Name = "", string Email = "", string CpfCnpj = "", string GroupName = "", string ExternalReference = "", int OffSet = 0, int Limit = 0, string Environment = "S")
+    {
+        try
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            string url = "";
+            bool FilterAdd = false;
+
+            if (CustomerID != "")
+            {
+                url = LinkAsaas + "/api/v3/customers/" + CustomerID;
+            }
+            else
+            {
+                url = LinkAsaas + "/api/v3/customers?";
+                if (Name != "")
+                {
+                    url += "name=" + Name;
+                    FilterAdd = true;
+                }
+                if (Email != "")
+                {
+                    url += (FilterAdd ? "&email=" : "email=") + Email;
+                    FilterAdd = true;
+                }
+                if (CpfCnpj != "")
+                {
+                    url += (FilterAdd ? "&cpfCnpj" : "cpfCnpj") + CpfCnpj;
+                    FilterAdd = true;
+                }
+                if (GroupName != "")
+                {
+                    url += (FilterAdd ? "&groupName" : "groupName") + GroupName;
+                    FilterAdd = true;
+                }
+                if (ExternalReference != "")
+                {
+                    url += (FilterAdd ? "&externalReference" : "externalReference") + ExternalReference;
+                    FilterAdd = true;
+                }
+                if (OffSet > 0)
+                {
+                    url += (FilterAdd ? "&offset" : "offset");
+                    FilterAdd = true;
+                }
+                if (Limit > 0)
+                {
+                    url += (FilterAdd ? "&limit" : "limit");
+                    FilterAdd = true;
+                }
+                if (!FilterAdd)
+                    return null;
+            }
+
+            var client = new RestClient(url);
+
+            var request = new RestRequest();
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+
+            var response = client.Post(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            AsaasModelCommunity.CustomerResponseList listCustomers = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content);
+            return listCustomers;
         }
 
         catch (Exception ex)
