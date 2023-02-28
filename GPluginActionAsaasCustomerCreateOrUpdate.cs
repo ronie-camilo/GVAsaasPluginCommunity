@@ -64,7 +64,7 @@ namespace Gvinci.Plugin.Action
             string Bairro = this.Parameters[10].Value.ToString();
             string Cep = this.Parameters[11].Value.ToString();
             string Referencia = this.Parameters[12].Value.ToString();
-            bool NotificacaoDesabilitada = bool.Parse(this.Parameters[13].Value.ToString());
+            string NotificacaoDesabilitada = this.Parameters[13].Value.ToString();
             string EmailsAdicionais = this.Parameters[14].Value.ToString();
             string InscricaoMunicipal = this.Parameters[15].Value.ToString();
             string InscricaoEstadual = this.Parameters[16].Value.ToString();
@@ -78,10 +78,10 @@ namespace Gvinci.Plugin.Action
 
             string indentStr = new string('\t', Identation);
 
-            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerCreateOrUpdate(Token: { Token }, CustomerID: { ClienteID }, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { Referencia }, NotificationDisabled: { NotificacaoDesabilitada }, AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo }, Environment: { Ambiente });");
+            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerCreateOrUpdate(Token: { Token }, CustomerID: { ClienteID }, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { Referencia }, NotificationDisabled: bool.Parse({ NotificacaoDesabilitada }), AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo }, Environment: { Ambiente });");
 
-            Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = response.id");
-            Builder.AppendLine(indentStr + Content.Name + ".Text = response.content");
+            Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = response.id;");
+            Builder.AppendLine(indentStr + Content.Name + ".Text = response.content;");
         }
 
     }
