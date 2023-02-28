@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0008-462296E7027E}";
 
-        public override string Name => "Estornar cobrança";
+        public override string Name => "Cobranças - Estornar";
 
         public override string Description => "Estornar cobrança no Asaas";
 

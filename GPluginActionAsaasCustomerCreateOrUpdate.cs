@@ -7,7 +7,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0002-462296E7027E}";
 
-        public override string Name => "Incluir cliente";
+        public override string Name => "Clientes - Incluir novo ou atualizar";
 
         public override string Description => "Incluir cliente no Asaas";
 

@@ -10,7 +10,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0005-462296E7027E}";
 
-        public override string Name => "Deletar cliente";
+        public override string Name => "Clientes - Procurar";
 
         public override string Description => "Deletar cliente no Asaas";
 

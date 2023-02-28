@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0006-462296E7027E}";
 
-        public override string Name => "Emitir boleto";
+        public override string Name => "Cobranças - Emitir boleto";
 
         public override string Description => "Emitir boleto no Asaas";
 

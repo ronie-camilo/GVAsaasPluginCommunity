@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0007-462296E7027E}";
 
-        public override string Name => "Deletar boleto";
+        public override string Name => "Cobranças - Apagar";
 
         public override string Description => "Deletar boleto no Asaas";
 

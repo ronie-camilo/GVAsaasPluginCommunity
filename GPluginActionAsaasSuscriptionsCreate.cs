@@ -8,7 +8,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0009-462296E7027E}";
 
-        public override string Name => "Emitir assinatura";
+        public override string Name => "Assinaturas - Criar nova";
 
         public override string Description => "Emitir assinatura no Asaas";
 

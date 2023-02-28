@@ -7,7 +7,7 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-000A-462296E7027E}";
 
-        public override string Name => "Deletar assinatura";
+        public override string Name => "Assinaturas - Apagar";
 
         public override string Description => "Deletar assinatura no Asaas";
 
