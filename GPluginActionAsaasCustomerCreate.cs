@@ -42,9 +42,9 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() {ID = 16, Name = "Inscrição estadual", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() {ID = 17, Name = "Observações", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() {ID = 18, Name = "Nome do Grupo", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 19, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 20, Name = "Retorno - ID do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 21, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
+                new GPluginActionParameter() {ID = 19, Name = "Retorno - ID do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
+                new GPluginActionParameter() {ID = 20, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
+                new GPluginActionParameter() {ID = 21, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
            };
        }
 
@@ -68,15 +68,16 @@ namespace Gvinci.Plugin.Action
             string InscricaoEstadual = this.Parameters[15].Value.ToString();
             string Observacoes = this.Parameters[16].Value.ToString();
             string NomeGrupo = this.Parameters[17].Value.ToString();
-            string Ambiente = this.Parameters[18].Value.ToString();
 
-            IGPluginControl CustomerID = this.Parameters[19].Value as IGPluginControl;
-            IGPluginControl Content = this.Parameters[20].Value as IGPluginControl;
+            IGPluginControl CustomerID = this.Parameters[18].Value as IGPluginControl;
+            IGPluginControl Content = this.Parameters[19].Value as IGPluginControl;
 
-            
+            string Ambiente = this.Parameters[20].Value.ToString();
 
             string indentStr = new string('\t', Identation);
+
             Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerCreate(Token: { Token }, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { Referencia }, NotificationDisabled: { NotificacaoDesabilitada }, AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo }, Environment: { Ambiente });");
+            
             Builder.AppendLine(indentStr + CustomerID.Name + ".Text = response.id");
             Builder.AppendLine(indentStr + Content.Name + ".Text = response.content");
        }

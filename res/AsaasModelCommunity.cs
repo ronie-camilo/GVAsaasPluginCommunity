@@ -58,9 +58,15 @@ public class AsaasModelCommunity
         public string state { get; set; }
         public string country { get; set; }
         public string content { get; set; }
+        public Groups[] groups { get; set; }
 
         //Erros
         public List<Error> errors { get; set; }
+    }
+
+    public class Groups
+    {
+        public string name { get; set; }
     }
 
     public class PaymentsRequest
@@ -264,6 +270,7 @@ public class AsaasModelCommunity
         public int totalCount { get; set; }
         public int limit { get; set; }
         public int offset { get; set; }
+        public string content { get; set; }
         public CustomerResponse[] data { get; set; }
     }
 }

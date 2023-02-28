@@ -45,9 +45,10 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CustomerResponse Customer = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
-            Customer.content = response.Content;
-            return Customer;
+            AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            customerResponse.content = response.Content;
+
+            return customerResponse;
         }
 
         catch (Exception ex)
@@ -107,8 +108,10 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CustomerResponse Customer = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
-            return Customer;
+            AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            customerResponse.content = response.Content;
+
+            return customerResponse;
         }
 
         catch (Exception ex)
@@ -136,6 +139,7 @@ public static class GvinciAsaasCommunity
             }
 
             AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            customerResponse.content = response.Content;
 
             return customerResponse;
         }
@@ -146,7 +150,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static AsaasModelCommunity.CustomerResponseList Asaas_CustomerSearch(string Token = "", string CustomerID = "", string Name = "", string Email = "", string CpfCnpj = "", string GroupName = "", string ExternalReference = "", int OffSet = 0, int Limit = 0, string Environment = "S")
+    public static AsaasModelCommunity.CustomerResponseList Asaas_CustomerSearch(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string GroupName = "", string ExternalReference = "", int OffSet = 0, int Limit = 0, string Environment = "S")
     {
         try
         {
@@ -215,6 +219,8 @@ public static class GvinciAsaasCommunity
             }
 
             AsaasModelCommunity.CustomerResponseList listCustomers = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content);
+            listCustomers.content = response.Content.ToString();
+
             return listCustomers;
         }
 
