@@ -273,4 +273,53 @@ public class AsaasModelCommunity
         public string content { get; set; }
         public CustomerResponse[] data { get; set; }
     }
+
+    public class AccountRequest
+    {
+        public string name { get; set; }
+        public string email { get; set; }
+        public string loginEmail { get; set; }
+        public string cpfCnpj { get; set; }
+        public string birthDate { get; set; }
+        public string companyType { get; set; }
+        public string phone { get; set; }
+        public string mobilePhone { get; set; }
+        public string address { get; set; }
+        public string addressNumber { get; set; }
+        public string complement { get; set; }
+        public string province { get; set; }
+        public string postalCode { get; set; }
+    }
+
+    public class AccountResponse
+    {
+        public string _object { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string email { get; set; }
+        public string loginEmail { get; set; }
+        public string phone { get; set; }
+        public string mobilePhone { get; set; }
+        public string address { get; set; }
+        public string addressNumber { get; set; }
+        public string complement { get; set; }
+        public string province { get; set; }
+        public string postalCode { get; set; }
+        public string cpfCnpj { get; set; }
+        public string birthDate { get; set; }
+        public string personType { get; set; }
+        public string companyType { get; set; }
+        public int city { get; set; }
+        public string state { get; set; }
+        public string country { get; set; }
+        public string apiKey { get; set; }
+        public WalletId walletId { get; set; }
+    }
+
+    public class WalletId
+    {
+        public string agency { get; set; }
+        public string account { get; set; }
+        public string accountDigit { get; set; }
+    }
 }

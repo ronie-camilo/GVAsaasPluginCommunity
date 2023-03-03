@@ -21,8 +21,8 @@ namespace Gvinci.Plugin.Action
                 return new List<GPluginAction>()
                 {
                     new GPluginActionAsaasCustomerCreate(this),
-                    new GPluginActionAsaasCustomerCreateOrUpdate(this),
                     new GPluginActionAsaasCustomerRemove(this),
+                    new GPluginActionAsaasCustomerRestore(this),
                     new GPluginActionAsaasCustomerSearch(this),
                     new GPluginActionAsaasPaymentsCreate(this),
                     new GPluginActionAsaasPaymentsDelete(this),

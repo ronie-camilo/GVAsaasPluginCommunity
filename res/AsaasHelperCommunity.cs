@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using RestSharp;
 using System;
-using System.Collections.Generic;
 using System.Net;
 
 public static class GvinciAsaasCommunity
@@ -10,99 +9,46 @@ public static class GvinciAsaasCommunity
     {
         try
         {
+            AsaasModelCommunity.CustomerResponseList ListCustomers = Asaas_CustomerSearch(Token: Token, Email: Email, CpfCnpj: CpfCnpj, Environment: Environment);
+
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
 
-            var client = new RestClient(LinkAsaas + "/api/v3/customers");
-
-            var request = new RestRequest();
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("access_token", Token);
-
-            var customerRequest = new AsaasModelCommunity.CustomerRequest();
-            customerRequest.name = Name;
-            customerRequest.cpfCnpj = CpfCnpj;
-            customerRequest.email = Email;
-            customerRequest.phone = Phone;
-            customerRequest.mobilePhone = Mobilephone;
-            customerRequest.address = Address;
-            customerRequest.addressNumber = AddressNumber;
-            customerRequest.complement = Complement;
-            customerRequest.province = Province;
-            customerRequest.postalCode = PostalCode;
-            customerRequest.externalReference = ExternalReference;
-            customerRequest.notificationDisabled = NotificationDisabled;
-            customerRequest.additionalEmails = AdditionalEmails;
-            customerRequest.municipalInscription = MunicipalInscription;
-            customerRequest.stateInscription = StateInscription;
-            customerRequest.observations = Observations;
-            customerRequest.groupName = GroupName;
-            request.AddJsonBody(customerRequest);
-            
-            var response = client.Post(request);
-            if (!response.IsSuccessful)
-            {
-                throw new Exception(response.Content);
-            }
-
-            AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
-            customerResponse.content = response.Content;
-
-            return customerResponse;
-        }
-
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerCreateOrUpdate(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "", string Environment = "S")
-    {
-        try
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-
-            string url = LinkAsaas;
-
-            if (CustomerID != "")
-            {
-                url += "/api/v3/customers/" + CustomerID;
-            }
-            else
-            {
-                AsaasModelCommunity.CustomerResponseList ListCustomers = Asaas_CustomerSearch(Token: Token, Name: Name, Email: Email, CpfCnpj: CpfCnpj, GroupName: GroupName, ExternalReference: ExternalReference, OffSet: 0, Limit: 1, Environment: Environment);
-                url += (ListCustomers.totalCount > 0 ? "/api/v3/customers/" + ListCustomers.data[0].id : "/api/v3/customers");
-            }
+            string CustomerID = (ListCustomers.totalCount > 0 ? ListCustomers.data[0].id : "");
+            string url = LinkAsaas + (ListCustomers.totalCount > 0 ? "/api/v3/customers/" + ListCustomers.data[0].id : "/api/v3/customers");
 
             var client = new RestClient(url);
 
-            var request = new RestRequest();
+            var request = (CustomerID == "" ? new RestRequest(Method.POST) : new RestRequest(Method.PUT));
+
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
 
-            var customerRequest = new AsaasModelCommunity.CustomerRequest();
-            customerRequest.name = Name;
-            customerRequest.cpfCnpj = CpfCnpj;
-            customerRequest.email = Email;
-            customerRequest.phone = Phone;
-            customerRequest.mobilePhone = Mobilephone;
-            customerRequest.address = Address;
-            customerRequest.addressNumber = AddressNumber;
-            customerRequest.complement = Complement;
-            customerRequest.province = Province;
-            customerRequest.postalCode = PostalCode;
-            customerRequest.externalReference = ExternalReference;
-            customerRequest.notificationDisabled = NotificationDisabled;
-            customerRequest.additionalEmails = AdditionalEmails;
-            customerRequest.municipalInscription = MunicipalInscription;
-            customerRequest.stateInscription = StateInscription;
-            customerRequest.observations = Observations;
-            customerRequest.groupName = GroupName;
+            var customerRequest = new AsaasModelCommunity.CustomerRequest 
+            {
+                id = CustomerID,
+                name = Name,
+                cpfCnpj = CpfCnpj,
+                email = Email,
+                phone = Phone,
+                mobilePhone = Mobilephone,
+                address = Address,
+                addressNumber = AddressNumber,
+                complement = Complement,
+                province = Province,
+                postalCode = PostalCode,
+                externalReference = ExternalReference,
+                notificationDisabled = NotificationDisabled,
+                additionalEmails = AdditionalEmails,
+                municipalInscription = MunicipalInscription,
+                stateInscription = StateInscription,
+                observations = Observations,
+                groupName = GroupName
+            };
+
             request.AddJsonBody(customerRequest);
 
-            var response = client.Post(request);
+            var response = client.Execute(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
@@ -212,7 +158,7 @@ public static class GvinciAsaasCommunity
             request.AddHeader("access_token", Token);
 
 
-            var response = client.Post(request);
+            var response = client.Get(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
@@ -232,7 +178,7 @@ public static class GvinciAsaasCommunity
 
     public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsCreate(string Token, string Name, string CpfCnpj, string Email, string Phone, string Mobilephone, string PostalCode, string AddressNumber, string ExternalReference, DateTime Vencimento, decimal Valor, string Descricao, string DocRef, string InterestValue, string FineValue, string Environment)
     {
-        var customerResponse = Asaas_CustomerCreateOrUpdate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, Environment);
+        var customerResponse = Asaas_CustomerCreate(Token, Name, CpfCnpj, Email, Phone, Mobilephone, PostalCode, AddressNumber, ExternalReference, Environment);
         return Asaas_PaymentsCreate(Token, customerResponse.id, Vencimento, Valor, Descricao, DocRef, InterestValue, FineValue, Environment);
 
 
@@ -337,7 +283,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description,string Environment, string ReturnType)
+    public static AsaasModelCommunity.PaymentsResponse Asaas_PaymentsRefund(string Token, string PaymentsID, decimal Value, string Description, string Environment, string ReturnType)
     {
         try
         {
