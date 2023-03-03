@@ -8,7 +8,7 @@ namespace Gvinci.Plugin.Action
 {
     internal class GPluginActionAsaasCustomerSearch : GPluginAction
     {
-        public override string ID => "{C6926C40-F906-4BF9-0005-462296E7027E}";
+        public override string ID => "{C6926C40-F906-4BF9-0004-462296E7027E}";
 
         public override string Name => "Clientes - Procurar";
 

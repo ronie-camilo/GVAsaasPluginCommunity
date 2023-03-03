@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
 {
     internal class GPluginActionAsaasSuscriptionsCreate : GPluginAction
     {
-        public override string ID => "{C6926C40-F906-4BF9-0009-462296E7027E}";
+        public override string ID => "{C6926C40-F906-4BF9-0008-462296E7027E}";
 
         public override string Name => "Assinaturas - Criar nova";
 

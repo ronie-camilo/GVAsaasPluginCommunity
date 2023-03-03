@@ -5,7 +5,7 @@ namespace Gvinci.Plugin.Action
 {
     internal class GPluginActionAsaasCustomerRemove : GPluginAction
     {
-        public override string ID => "{C6926C40-F906-4BF9-0003-462296E7027E}";
+        public override string ID => "{C6926C40-F906-4BF9-0002-462296E7027E}";
 
         public override string Name => "Clientes - Apagar";
 

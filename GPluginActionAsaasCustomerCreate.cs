@@ -76,7 +76,7 @@ namespace Gvinci.Plugin.Action
 
             string indentStr = new string('\t', Identation);
 
-            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerCreateOrUpdate(Token: { Token }, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { Referencia }, NotificationDisabled: bool.Parse({ NotificacaoDesabilitada }), AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo }, Environment: { Ambiente });");
+            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerCreate(Token: { Token }, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { Referencia }, NotificationDisabled: bool.Parse({ NotificacaoDesabilitada }), AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo }, Environment: { Ambiente });");
 
             if (RetClienteID.Name != "")
                 Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = response.id;");
