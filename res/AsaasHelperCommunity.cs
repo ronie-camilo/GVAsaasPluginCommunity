@@ -9,7 +9,7 @@ public static class GvinciAsaasCommunity
     {
         try
         {
-            AsaasModelCommunity.CustomerResponseList ListCustomers = Asaas_CustomerSearch(Token: Token, Email: Email, CpfCnpj: CpfCnpj, Environment: Environment);
+            AsaasModelCommunity.CustomerResponseList ListCustomers = Asaas_CustomerSearch(Token: Token, CpfCnpj: CpfCnpj, Environment: Environment);
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
