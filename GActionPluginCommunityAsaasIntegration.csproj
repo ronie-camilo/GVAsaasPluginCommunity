@@ -7,8 +7,8 @@
     <ProjectGuid>{48A10D85-D376-4A96-835B-6B9C7F162822}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GActionPluginAsaasCommunity</RootNamespace>
-    <AssemblyName>GActionPluginAsaasCommunity</AssemblyName>
+    <RootNamespace>GActionPluginCommunityAsaasIntegration</RootNamespace>
+    <AssemblyName>GActionPluginCommunityAsaasIntegration</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
