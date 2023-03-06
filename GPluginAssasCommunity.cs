@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
     {
         public string ID => "{C6926C40-F906-4BF9-0000-462296E7027E}";
 
-        public string Name => "Asaas Integration Community";
+        public string Name => "Community - Asaas Integration";
 
         public string Description => "Plugin criado pela comunidade para completa integração do sistema de pagamento do Asaas";
 
