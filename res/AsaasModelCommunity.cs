@@ -64,6 +64,13 @@ public class AsaasModelCommunity
         public List<Error> errors { get; set; }
     }
 
+    public class CustomerRemoveResponse
+    {
+        public bool deleted { get; set; }
+        public string id { get; set; }
+        public string content { get; set; }
+    }
+
     public class Groups
     {
         public string name { get; set; }

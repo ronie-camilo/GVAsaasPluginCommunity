@@ -9,7 +9,7 @@ namespace Gvinci.Plugin.Action
 
         public override string Name => "Clientes - Incluir novo ou atualizar";
 
-        public override string Description => "Incluir cliente no Asaas";
+        public override string Description => "Incluir novo cliente ou atualizar cliente existente no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
 
@@ -24,9 +24,9 @@ namespace Gvinci.Plugin.Action
         {
             _Paramiters = new List<GPluginActionParameter>()
             {
-                new GPluginActionParameter() {ID = 1, Name = "Token Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 2 , Name = "Nome do cliente", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 3, Name = "Cpf/Cnpj", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID = 1, Name = "Token Asaas (Requerido)", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID = 2 , Name = "Nome do cliente (Requirido)", Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID = 3, Name = "Cpf/Cnpj (Requerido)", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() {ID = 4, Name = "Emdereço de e-mail", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() {ID = 5, Name = "Telefone", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() {ID = 6, Name = "Celular", Type = PluginActionParameterTypeEnum.STRING },
@@ -76,13 +76,21 @@ namespace Gvinci.Plugin.Action
 
             string indentStr = new string('\t', Identation);
 
-            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerCreate(Token: { Token }, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { Referencia }, NotificationDisabled: bool.Parse({ NotificacaoDesabilitada }), AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo }, Environment: { Ambiente });");
+            if (Token != "" && Nome != "" && CpfCnpj != "")
+            {
+                Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerCreate(Token: {Token}, Name: {Nome}, CpfCnpj: {CpfCnpj}, Email: {Email}, Phone: {Telefone}, Mobilephone: {Celular}, Address: {Endereco}, AddressNumber: {Numero}, Complement: {Complemento}, Province: {Bairro}, PostalCode: {Cep}, ExternalReference: {Referencia}, NotificationDisabled: bool.Parse({NotificacaoDesabilitada}), AdditionalEmails: {EmailsAdicionais}, MunicipalInscription: {InscricaoMunicipal}, StateInscription: {InscricaoEstadual}, Observations: {Observacoes}, GroupName: {NomeGrupo}, Environment: {Ambiente});");
 
-            if (RetClienteID.Name != "")
-                Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = response.id;");
-            
-            if (Content.Name != "")
-                Builder.AppendLine(indentStr + Content.Name + ".Text = response.content;");
+                if (RetClienteID.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = response.id;");
+                }
+
+                if (Content.Name != "")
+                {
+                    Builder.AppendLine(indentStr + Content.Name + ".Text = response.content;");
+                }
+
+            }
 
         }
 

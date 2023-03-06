@@ -66,25 +66,56 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerDelete(string Token = "", string CustomerID = "", string Environment = "S")
+    public static AsaasModelCommunity.CustomerRemoveResponse Asaas_CustomerRemove(string Token = "", string CustomerID = "", string Environment = "S")
     {
         try
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-            var client = new RestClient(LinkAsaas + "/api/v3/payments/" + CustomerID);
+            var client = new RestClient(LinkAsaas + "/api/v3/customers/" + CustomerID);
 
-            var request = new RestRequest();
+            var request = new RestRequest(Method.DELETE);
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
 
-            var response = client.Delete(request);
+            var response = client.Execute(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+            AsaasModelCommunity.CustomerRemoveResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerRemoveResponse>(response.Content);
+            customerResponse.content = response.Content;
+
+            return customerResponse;
+        }
+
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public static AsaasModelCommunity.CustomerRemoveResponse Asaas_CustomerRestore(string Token = "", string CustomerID = "", string Environment = "S")
+    {
+        try
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+            var client = new RestClient(LinkAsaas + "/api/v3/customers/" + CustomerID) + "/restore";
+
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("access_token", Token);
+
+            var reponse = client.ex
+            //var response = client.Execute(request);
+            if (!response.IsSuccessful)
+            {
+                throw new Exception(response.Content);
+            }
+
+            AsaasModelCommunity.CustomerRemoveResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerRemoveResponse>(response.Content);
             customerResponse.content = response.Content;
 
             return customerResponse;
