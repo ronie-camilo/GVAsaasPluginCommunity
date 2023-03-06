@@ -102,14 +102,13 @@ public static class GvinciAsaasCommunity
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-            var client = new RestClient(LinkAsaas + "/api/v3/customers/" + CustomerID) + "/restore";
+            var client = new RestClient(LinkAsaas + "/api/v3/customers/" + CustomerID + "/restore");
 
             var request = new RestRequest(Method.POST);
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
 
-            var reponse = client.ex
-            //var response = client.Execute(request);
+            var response = client.Execute(request);
             if (!response.IsSuccessful)
             {
                 throw new Exception(response.Content);
