@@ -102,61 +102,34 @@ public static class GvinciAsaasCommunity
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-            string url = "";
-            bool FilterAdd = false;
+            string url = "", FilterArgs = "";
 
-            if (CustomerID != "")
+            if (CustomerID != "") 
             {
                 url = LinkAsaas + "/api/v3/customers/" + CustomerID;
             }
             else
             {
                 url = LinkAsaas + "/api/v3/customers?";
-                if (Name != "")
+                FilterArgs += (Name != "" ? "name=" + Name : "");
+                FilterArgs += (Email != "" ? (FilterArgs != "" ? "&" : "") + "email=" + Email : "");
+                FilterArgs += (CpfCnpj != "" ? (FilterArgs != "" ? "&" : "") + "cpfCnpj=" + CpfCnpj : "");
+                FilterArgs += (GroupName != "" ? (FilterArgs != "" ? "&" : "") + "groupName=" + GroupName : "");
+                FilterArgs += (ExternalReference != "" ? (FilterArgs != "" ? "&" : "") + "externalReference=" + ExternalReference : "");
+                FilterArgs += (OffSet > 0 ? (FilterArgs != "" ? "&" : "") + "offSet=" + OffSet : "");
+                FilterArgs += (Limit > 0 ? (FilterArgs != "" ? "&" : "") + "limit=" + Limit : "");
+                url += FilterArgs;
+
+                if (FilterArgs == "")
                 {
-                    url += "name=" + Name;
-                    FilterAdd = true;
-                }
-                if (Email != "")
-                {
-                    url += (FilterAdd ? "&email=" : "email=") + Email;
-                    FilterAdd = true;
-                }
-                if (CpfCnpj != "")
-                {
-                    url += (FilterAdd ? "&cpfCnpj" : "cpfCnpj") + CpfCnpj;
-                    FilterAdd = true;
-                }
-                if (GroupName != "")
-                {
-                    url += (FilterAdd ? "&groupName" : "groupName") + GroupName;
-                    FilterAdd = true;
-                }
-                if (ExternalReference != "")
-                {
-                    url += (FilterAdd ? "&externalReference" : "externalReference") + ExternalReference;
-                    FilterAdd = true;
-                }
-                if (OffSet > 0)
-                {
-                    url += (FilterAdd ? "&offset" : "offset");
-                    FilterAdd = true;
-                }
-                if (Limit > 0)
-                {
-                    url += (FilterAdd ? "&limit" : "limit");
-                    FilterAdd = true;
-                }
-                if (!FilterAdd)
                     return null;
+                }
             }
 
             var client = new RestClient(url);
-
             var request = new RestRequest();
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("access_token", Token);
-
 
             var response = client.Get(request);
             if (!response.IsSuccessful)
