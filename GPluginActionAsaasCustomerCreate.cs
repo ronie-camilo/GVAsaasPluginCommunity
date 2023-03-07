@@ -42,8 +42,8 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() {ID = 16, Name = "Inscrição estadual", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() {ID = 17, Name = "Observações", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() {ID = 18, Name = "Nome do Grupo", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 19, Name = "Retorno - ID do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 20, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
+                new GPluginActionParameter() {ID = 19, Name = "Retorno - ID do cliente (Textbox)", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
+                new GPluginActionParameter() {ID = 20, Name = "Retorno - Retorno da API (Textbox)", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
                 new GPluginActionParameter() {ID = 21, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
            };
         }

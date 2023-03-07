@@ -7,9 +7,9 @@ namespace Gvinci.Plugin.Action
     {
         public override string ID => "{C6926C40-F906-4BF9-0002-462296E7027E}";
 
-        public override string Name => "Clientes - Remover existente";
+        public override string Name => "Clientes - Remover um cliente existente";
 
-        public override string Description => "Remover cliente existente no Asaas";
+        public override string Description => "Remover um cliente existente no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
 
@@ -27,8 +27,8 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() { ID = 1, Name = "Token Asaas (Requerido)", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 2, Name = "ID do cliente (Requerido)", Type = PluginActionParameterTypeEnum.STRING },
                 new GPluginActionParameter() { ID = 3, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() { ID = 4, Name = "Retorno - Estado da remoção do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
-                new GPluginActionParameter() { ID = 5, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() { ID = 4, Name = "Retorno - Estado de remoção (Checkbox)", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GCHECKBOX" } },
+                new GPluginActionParameter() { ID = 5, Name = "Retorno - Retorno da API (Textbox)", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
             };
         }
 
@@ -46,11 +46,11 @@ namespace Gvinci.Plugin.Action
 
             if (Token != "" && ClienteID != "")
             {
-                Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerDelete(Token: {Token}, CustomerID: {ClienteID}, Environment: {Ambiente});");
+                Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerRemove(Token: {Token}, CustomerID: {ClienteID}, Environment: {Ambiente});");
 
                 if (RetEstadoRemocao.Name != "")
                 {
-                    Builder.AppendLine(indentStr + RetEstadoRemocao.Name + ".Text = response.deleted");
+                    Builder.AppendLine(indentStr + RetEstadoRemocao.Name + ".Checked = response.deleted");
                 }
 
                 if (Content.Name != "")
