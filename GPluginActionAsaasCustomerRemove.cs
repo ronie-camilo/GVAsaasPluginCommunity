@@ -37,10 +37,10 @@ namespace Gvinci.Plugin.Action
             string Token = (this.Parameters[0].Value.ToString() != "" ? this.Parameters[0].Value.ToString() : "\"\"");
             string ClienteID = (this.Parameters[1].Value.ToString() != "" ? this.Parameters[1].Value.ToString() : "\"\"");
 
-            IGPluginControl RetEstadoRemocao = this.Parameters[2].Value as IGPluginControl;
-            IGPluginControl Content = this.Parameters[3].Value as IGPluginControl;
+            IGPluginControl RetEstadoRemocao = this.Parameters[3].Value as IGPluginControl;
+            IGPluginControl Content = this.Parameters[4].Value as IGPluginControl;
 
-            string Ambiente = (this.Parameters[4].Value.ToString() != "" ? this.Parameters[20].Value.ToString() : "\"S\"");
+            string Ambiente = (this.Parameters[2].Value.ToString() != "" ? this.Parameters[2].Value.ToString() : "\"S\"");
 
             string indentStr = new string('\t', Identation);
 
@@ -50,12 +50,12 @@ namespace Gvinci.Plugin.Action
 
                 if (RetEstadoRemocao.Name != "")
                 {
-                    Builder.AppendLine(indentStr + RetEstadoRemocao.Name + ".Checked = response.deleted");
+                    Builder.AppendLine(indentStr + RetEstadoRemocao.Name + ".Checked = response.deleted;");
                 }
 
                 if (Content.Name != "")
                 {
-                    Builder.AppendLine(indentStr + Content.Name + ".Text = response.content");
+                    Builder.AppendLine(indentStr + Content.Name + ".Text = response.content;");
                 }
 
             }
