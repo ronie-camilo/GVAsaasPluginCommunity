@@ -51,7 +51,7 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() {ID = 20, Name = "Retorno - Bairro (Textbox)",                     Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 21, Name = "Retorno - Cep (Textbox)",                        Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 12, Name = "Retorno - Cpf/Cnpj (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
-                new GPluginActionParameter() {ID = 23, Name = "Retorno - Tipo de pessoa (Textbox)",             Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 23, Name = "Retorno - Tipo de pessoa (Checkbox)",            Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 24, Name = "Retorno - Removido (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GCHECKBOX" } },
                 new GPluginActionParameter() {ID = 25, Name = "Retorno - Emails adicionais (Textbox)",          Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 26, Name = "Retorno - Referencia externa (Textbox)",         Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },

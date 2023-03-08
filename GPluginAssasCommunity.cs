@@ -29,6 +29,7 @@ namespace Gvinci.Plugin.Action
                     new GPluginActionAsaasPaymentsRefund(this),
                     new GPluginActionAsaasSuscriptionsCreate(this),
                     new GPluginActionAsaasSuscriptionsDelete(this),
+                    new GPluginActionAsaasWebhookPayment(this),
                 };
             }
         }
