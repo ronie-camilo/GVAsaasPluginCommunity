@@ -52,10 +52,10 @@ namespace Gvinci.Plugin.Action
                 new GPluginActionParameter() {ID = 21, Name = "Retorno - Cep (Textbox)",                        Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 12, Name = "Retorno - Cpf/Cnpj (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 23, Name = "Retorno - Tipo de pessoa (Textbox)",             Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
-                new GPluginActionParameter() {ID = 24, Name = "Retorno - Removido (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 24, Name = "Retorno - Removido (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GCHECKBOX" } },
                 new GPluginActionParameter() {ID = 25, Name = "Retorno - Emails adicionais (Textbox)",          Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 26, Name = "Retorno - Referencia externa (Textbox)",         Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
-                new GPluginActionParameter() {ID = 27, Name = "Retorno - Desabilitar notificações (Checkbox)",  Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 27, Name = "Retorno - Desabilitar notificações (Checkbox)",  Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GCHECKBOX" } },
                 new GPluginActionParameter() {ID = 28, Name = "Retorno - Inscrição municipal (Textbox)",        Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 29, Name = "Retorno - Inscrição estadual (Textbox)",         Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
                 new GPluginActionParameter() {ID = 30, Name = "Retorno - Observações (Textbox)",                Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
@@ -66,63 +66,182 @@ namespace Gvinci.Plugin.Action
 
         public override void WriteActionCall(StringBuilder Builder, int Identation, int ActionSequence)
         {
-            string Token = this.Parameters[0].Value.ToString();
-            string ClienteID = this.Parameters[1].Value.ToString();
-            string Nome = this.Parameters[2].Value.ToString();
-            string CpfCnpj = this.Parameters[3].Value.ToString();
-            string Email = this.Parameters[4].Value.ToString();
-            string NomeGrupo = this.Parameters[5].Value.ToString();
-            string ReferenciaExterna = this.Parameters[6].Value.ToString();
-            int OffSet = int.Parse(this.Parameters[7].Value.ToString());
-            int Limite = int.Parse(this.Parameters[8].Value.ToString());
+            //Inicialização das variaveis para tratamento dos parametros recebidos para a ação do plugin
+            string Ambiente                             = (this.Parameters[ 0].Value.ToString() != "" ? this.Parameters[0].Value.ToString() : "\"S\"");
+            string Token                                = (this.Parameters[ 1].Value.ToString() != "" ? this.Parameters[1].Value.ToString() : "\"\"");
+            string CpfCnpj                              = (this.Parameters[ 4].Value.ToString() != "" ? this.Parameters[2].Value.ToString() : "\"\"");
+            string ClienteID                            = (this.Parameters[ 2].Value.ToString() != "" ? this.Parameters[3].Value.ToString() : "\"\"");
+            string Nome                                 = (this.Parameters[ 3].Value.ToString() != "" ? this.Parameters[4].Value.ToString() : "\"\"");
+            string Email                                = (this.Parameters[ 5].Value.ToString() != "" ? this.Parameters[5].Value.ToString() : "\"\"");
+            string NomeGrupo                            = (this.Parameters[ 6].Value.ToString() != "" ? this.Parameters[6].Value.ToString() : "\"\"");
+            string ReferenciaExterna                    = (this.Parameters[ 7].Value.ToString() != "" ? this.Parameters[7].Value.ToString() : "\"\"");
+            int OffSet                                  = (this.Parameters[ 8].Value.ToString() != "" ? int.Parse(this.Parameters[8].Value.ToString()) : 0);
+            int Limite                                  = (this.Parameters[ 9].Value.ToString() != "" ? int.Parse(this.Parameters[9].Value.ToString()) : 0);
 
-            IGPluginControl RetClienteID = this.Parameters[9].Value as IGPluginControl;
-            IGPluginControl RetNome = this.Parameters[10].Value as IGPluginControl;
-            IGPluginControl RetCpfCnpj = this.Parameters[11].Value as IGPluginControl;
-            IGPluginControl RetEmail = this.Parameters[12].Value as IGPluginControl;
-            IGPluginControl RetTelefone = this.Parameters[13].Value as IGPluginControl;
-            IGPluginControl RetCelular = this.Parameters[14].Value as IGPluginControl;
-            IGPluginControl RetEndereco = this.Parameters[15].Value as IGPluginControl;
-            IGPluginControl RetNumero = this.Parameters[16].Value as IGPluginControl;
-            IGPluginControl RetComplemento = this.Parameters[17].Value as IGPluginControl;
-            IGPluginControl RetBairro = this.Parameters[18].Value as IGPluginControl;
-            IGPluginControl RetCep = this.Parameters[19].Value as IGPluginControl;
-            IGPluginControl RetReferenciaExterna = this.Parameters[20].Value as IGPluginControl;
-            IGPluginControl RetNotificacaoDesabilitada = this.Parameters[21].Value as IGPluginControl;
-            IGPluginControl RetEmailsAdicionais = this.Parameters[22].Value as IGPluginControl;
-            IGPluginControl RetInscricaoMunicipal = this.Parameters[23].Value as IGPluginControl;
-            IGPluginControl RetInscricaoEstadual = this.Parameters[24].Value as IGPluginControl;
-            IGPluginControl RetObservacoes = this.Parameters[25].Value as IGPluginControl;
-            IGPluginControl RetNomeGrupo = this.Parameters[26].Value as IGPluginControl;
-            IGPluginControl Content = this.Parameters[27].Value as IGPluginControl;
+            //Inicialização das variaveis para tratamento dos retornos da ação do plugin
+            IGPluginControl RetClienteID                = this.Parameters[10].Value as IGPluginControl;
+            IGPluginControl RetDataCriacao              = this.Parameters[11].Value as IGPluginControl;
+            IGPluginControl RetNome                     = this.Parameters[12].Value as IGPluginControl;
+            IGPluginControl RetEmail                    = this.Parameters[13].Value as IGPluginControl;
+            IGPluginControl RetTelefone                 = this.Parameters[14].Value as IGPluginControl;
+            IGPluginControl RetCelular                  = this.Parameters[15].Value as IGPluginControl;
+            IGPluginControl RetEndereco                 = this.Parameters[16].Value as IGPluginControl;
+            IGPluginControl RetNumero                   = this.Parameters[17].Value as IGPluginControl;
+            IGPluginControl RetComplemento              = this.Parameters[18].Value as IGPluginControl;
+            IGPluginControl RetBairro                   = this.Parameters[19].Value as IGPluginControl;
+            IGPluginControl RetCep                      = this.Parameters[20].Value as IGPluginControl;
+            IGPluginControl RetCpfCnpj                  = this.Parameters[21].Value as IGPluginControl;
+            IGPluginControl RetTipoPessoa               = this.Parameters[22].Value as IGPluginControl;
+            IGPluginControl RetRemovido                 = this.Parameters[23].Value as IGPluginControl;
+            IGPluginControl RetEmailsAdicionais         = this.Parameters[24].Value as IGPluginControl;
+            IGPluginControl RetReferenciaExterna        = this.Parameters[25].Value as IGPluginControl;
+            IGPluginControl RetNotificacaoDesabilitada  = this.Parameters[26].Value as IGPluginControl;
+            IGPluginControl RetInscricaoMunicipal       = this.Parameters[27].Value as IGPluginControl;
+            IGPluginControl RetInscricaoEstadual        = this.Parameters[28].Value as IGPluginControl;
+            IGPluginControl RetObservacoes              = this.Parameters[29].Value as IGPluginControl;
+            IGPluginControl RetNomeGrupo                = this.Parameters[30].Value as IGPluginControl;
+            IGPluginControl Content                     = this.Parameters[31].Value as IGPluginControl;
 
-            string Ambiente = this.Parameters[28].Value.ToString();
-
+            //Variavel para controle da identação que sera usada na escrita da ação do plugin
             string indentStr = new string('\t', Identation);
 
-            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerSearch(Token: { Token }, CustomerID: { ClienteID}, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, GroupName: { NomeGrupo }, ExternalReference: { ReferenciaExterna }, OffSet: { OffSet }, Limit: { Limite }, Environment: { Ambiente });");
+            //Verifica se as informações requeridas foram informadas para prossegir
+            if (Token != "" && (CpfCnpj != "" || ClienteID != ""))
+            {
+                Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerSearch(Token: {Token}, CustomerID: {ClienteID}, Name: {Nome}, CpfCnpj: {CpfCnpj}, Email: {Email}, GroupName: {NomeGrupo}, ExternalReference: {ReferenciaExterna}, OffSet: {OffSet}, Limit: {Limite}, Environment: {Ambiente});");
 
-            Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = listCustomers.data[0].id.ToString();");
-            Builder.AppendLine(indentStr + RetNome.Name + ".Text = listCustomers.data[0].name.ToString();");
-            Builder.AppendLine(indentStr + RetCpfCnpj.Name + ".Text = listCustomers.data[0].cpfCnpj.ToString();");
-            Builder.AppendLine(indentStr + RetEmail.Name + ".Text = listCustomers.data[0].email.ToString();");
-            Builder.AppendLine(indentStr + RetTelefone.Name + ".Text = listCustomers.data[0].phone.ToString();");
-            Builder.AppendLine(indentStr + RetCelular.Name + ".Text = listCustomers.data[0].mobilePhone.ToString();");
-            Builder.AppendLine(indentStr + RetEndereco.Name + ".Text = listCustomers.data[0].address.ToString();");
-            Builder.AppendLine(indentStr + RetNumero.Name + ".Text = listCustomers.data[0].addressNumber.ToString();");
-            Builder.AppendLine(indentStr + RetComplemento.Name + ".Text = listCustomers.data[0].complement.ToString();");
-            Builder.AppendLine(indentStr + RetBairro.Name + ".Text = listCustomers.data[0].province.ToString();");
-            Builder.AppendLine(indentStr + RetCep.Name + ".Text = listCustomers.data[0].postalCode.ToString();");
-            Builder.AppendLine(indentStr + RetReferenciaExterna.Name + ".Text = listCustomers.data[0].externalReference.ToString();");
-            Builder.AppendLine(indentStr + RetNotificacaoDesabilitada.Name + ".Text = listCustomers.data[0].notificationDisabled.ToString();");
-            Builder.AppendLine(indentStr + RetEmailsAdicionais.Name + ".Text = listCustomers.data[0].additionalEmails.ToString();");
-            Builder.AppendLine(indentStr + RetInscricaoMunicipal.Name + ".Text = listCustomers.data[0].municipalInscription.ToString();");
-            Builder.AppendLine(indentStr + RetInscricaoEstadual.Name + ".Text = listCustomers.data[0].stateInscription.ToString();");
-            Builder.AppendLine(indentStr + RetObservacoes.Name + ".Text = listCustomers.data[0].observations.ToString();");
-            Builder.AppendLine(indentStr + RetNomeGrupo.Name + ".Text = listCustomers.data[0].groups[0].name.ToString();");
-            Builder.AppendLine(indentStr + Content.Name + ".Text = listCustomers.data[0].content.ToString();");
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetClienteID.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = response.data[0].id;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetDataCriacao.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetDataCriacao.Name + ".Text = response.data[0].dateCreated;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetNome.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetNome.Name + ".Text = response.data[0].name;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetEmail.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetEmail.Name + ".Text = response.data[0].email;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetTelefone.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetTelefone.Name + ".Text = response.data[0].phone;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetCelular.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetCelular.Name + ".Text = response.data[0].mobilePhone;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetEndereco.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetEndereco.Name + ".Text = response.data[0].address;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetNumero.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetNumero.Name + ".Text = response.data[0].addressNumber;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetComplemento.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetComplemento.Name + ".Text = response.data[0].complement;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetBairro.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetBairro.Name + ".Text = response.data[0].province;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetCep.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetCep.Name + ".Text = response.data[0].postalCode;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetCpfCnpj.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetCpfCnpj.Name + ".Text = response.data[0].cpfCnpj;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetTipoPessoa.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetTipoPessoa.Name + ".Text = response.data[0].personType;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetRemovido.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetRemovido.Name + ".Checked = response.data[0].deleted;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetReferenciaExterna.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetReferenciaExterna.Name + ".Text = response.data[0].externalReference;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetNotificacaoDesabilitada.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetNotificacaoDesabilitada.Name + ".Checked = response.data[0].notificationDisabled;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetEmailsAdicionais.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetEmailsAdicionais.Name + ".Text = response.data[0].additionalEmails;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetInscricaoMunicipal.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetInscricaoMunicipal.Name + ".Text = response.data[0].municipalInscription;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetInscricaoEstadual.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetInscricaoEstadual.Name + ".Text = response.data[0].stateInscription;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetObservacoes.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetObservacoes.Name + ".Text = response.data[0].observations;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (RetNomeGrupo.Name != "")
+                {
+                    Builder.AppendLine(indentStr + RetNomeGrupo.Name + ".Text = response.data[0].groups[0].name;");
+                }
+
+                //Testa se foi informado um controle para receber o referido dado de retorno
+                if (Content.Name != "")
+                {
+                    Builder.AppendLine(indentStr + Content.Name + ".Text = response.data[0].content;");
+                }
+            }
         }
-
     }
-
 }
