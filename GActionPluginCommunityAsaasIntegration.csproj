@@ -88,6 +88,7 @@
     <Compile Include="GPluginActionAsaasPaymentsRefund.cs" />
     <Compile Include="GPluginActionAsaasSuscriptionsCreate.cs" />
     <Compile Include="GPluginActionAsaasSuscriptionsDelete.cs" />
+    <Compile Include="GPluginActionAsaasWebhookPayment.cs" />
     <Compile Include="GPluginAssasCommunity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="res\AsaasHelperCommunity.cs" />

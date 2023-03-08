@@ -1,17 +1,13 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Security.Policy;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace Gvinci.Plugin.Action
 {
     internal class GPluginActionAsaasCustomerSearch : GPluginAction
     {
+        //Definições de identificação e exibição da ação do plugin
         public override string ID => "{C6926C40-F906-4BF9-0004-462296E7027E}";
-
         public override string Name => "Clientes - Procurar";
-
         public override string Description => "Deletar cliente no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;
@@ -25,39 +21,46 @@ namespace Gvinci.Plugin.Action
         }
         public GPluginActionAsaasCustomerSearch(IGPlugin Plugin) : base(Plugin)
         {
+            //Metodo para definição dos parametros da ação do plugin
             _Paramiters = new List<GPluginActionParameter>()
             {
-//string Token = "", string CustomerID = "", string Name = "", string Email = "", string CpfCnpj = "", string GroupName = "", string ExternalReference = "", int OffSet = 0, int Limit = 0, string Environment = "S"
+                //Parametros de informações requeridas pela ação do plugin
+                new GPluginActionParameter() {ID =  1, Name = "Ambiente (S=Sandbox e P=Produção)",              Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID =  2, Name = "Token Asaas (Requerido)",                        Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID =  3, Name = "Cpf/Cnpj (Requerido)",                           Type = PluginActionParameterTypeEnum.STRING },
 
-                new GPluginActionParameter() {ID = 1, Name = "Token Asaas", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 2, Name = "Código do cliente", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 3, Name = "Nome do cliente", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 4, Name = "Cpf/Cnpj", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 5, Name = "Emdereço de e-mail", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 6, Name = "Nome do Grupo", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 7, Name = "Referencia externa", Type = PluginActionParameterTypeEnum.STRING },
-                new GPluginActionParameter() {ID = 8, Name = "Posição inicial da lista", Type = PluginActionParameterTypeEnum.INTEGER },
-                new GPluginActionParameter() {ID = 9, Name = "Tamanho da lista", Type = PluginActionParameterTypeEnum.INTEGER },
-                new GPluginActionParameter() {ID = 10, Name = "Retorno - Código do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 11, Name = "Retorno - Nome do cliente", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 12, Name = "Retorno - Cpf/Cnpj", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 13, Name = "Retorno - Emdereço de e-mail", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 14, Name = "Retorno - Telefone", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 15, Name = "Retorno - Celular", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 16, Name = "Retorno - Emdereço", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 17, Name = "Retorno - Número", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 18, Name = "Retorno - Complemento", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 19, Name = "Retorno - Bairro", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 20, Name = "Retorno - Cep", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 21, Name = "Retorno - Referencia externa", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 22, Name = "Retorno - Notificação desabilitada", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 23, Name = "Retorno - Emails adicionais", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 24, Name = "Retorno - Inscrição municipal", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 25, Name = "Retorno - Inscrição estadual", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 26, Name = "Retorno - Observações", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 27, Name = "Retorno - Nome do Grupo", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 28, Name = "Retorno - Conteudo do retorno da API", Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] {"GTEXTBOX"} },
-                new GPluginActionParameter() {ID = 29, Name = "Ambiente (S=Sandbox e P=Produção)", Type = PluginActionParameterTypeEnum.STRING },
+                //Parametros de informações adicionais na ação do plugin
+                new GPluginActionParameter() {ID =  4, Name = "Código do cliente",                              Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID =  5, Name = "Nome do cliente",                                Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID =  6, Name = "Emdereço de e-mail",                             Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID =  7, Name = "Nome do Grupo",                                  Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID =  8, Name = "Referencia externa",                             Type = PluginActionParameterTypeEnum.STRING },
+                new GPluginActionParameter() {ID =  9, Name = "Posição inicial da lista",                       Type = PluginActionParameterTypeEnum.INTEGER },
+                new GPluginActionParameter() {ID = 10, Name = "Tamanho da lista",                               Type = PluginActionParameterTypeEnum.INTEGER },
+
+                //Parametros de retornos da ação do plugin
+                new GPluginActionParameter() {ID = 11, Name = "Retorno - Código do cliente (Textbox)",          Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 12, Name = "Retorno - Data de criação (Textbox)",            Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 13, Name = "Retorno - Nome do cliente (Textbox)",            Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 14, Name = "Retorno - Emdereço de e-mail (Textbox)",         Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 15, Name = "Retorno - Telefone (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 16, Name = "Retorno - Celular (Textbox)",                    Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 17, Name = "Retorno - Emdereço (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 18, Name = "Retorno - Número (Textbox)",                     Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 19, Name = "Retorno - Complemento (Textbox)",                Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 20, Name = "Retorno - Bairro (Textbox)",                     Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 21, Name = "Retorno - Cep (Textbox)",                        Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 12, Name = "Retorno - Cpf/Cnpj (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 23, Name = "Retorno - Tipo de pessoa (Textbox)",             Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 24, Name = "Retorno - Removido (Textbox)",                   Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 25, Name = "Retorno - Emails adicionais (Textbox)",          Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 26, Name = "Retorno - Referencia externa (Textbox)",         Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 27, Name = "Retorno - Desabilitar notificações (Checkbox)",  Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 28, Name = "Retorno - Inscrição municipal (Textbox)",        Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 29, Name = "Retorno - Inscrição estadual (Textbox)",         Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 30, Name = "Retorno - Observações (Textbox)",                Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 31, Name = "Retorno - Nome do Grupo (Textbox)",              Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
+                new GPluginActionParameter() {ID = 32, Name = "Retorno - Retorno da API (Textbox)",             Type = PluginActionParameterTypeEnum.CONTROL, AllowedControlTypes = new string[] { "GTEXTBOX" } },
             };
         }
 
