@@ -1,7 +1,4 @@
-﻿using Gvinci.Plugin;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace Gvinci.Plugin.Action
