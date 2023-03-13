@@ -5,7 +5,7 @@ namespace Gvinci.Plugin.Action
 {
     internal class GPluginActionAsaasSuscriptionsDelete : GPluginAction
     {
-        public override string ID => "{C6926C40-F906-4BF9-0009-462296E7027E}";
+        public override string ID => "C6926C40-F906-4BF9-0009-462296E7027E";
 
         public override string Name => "Assinaturas - Apagar";
 

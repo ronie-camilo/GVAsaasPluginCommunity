@@ -82,7 +82,7 @@
     <Compile Include="GPluginActionAsaasCustomerCreate.cs" />
     <Compile Include="GPluginActionAsaasCustomerRemove.cs" />
     <Compile Include="GPluginActionAsaasCustomerRestore.cs" />
-    <Compile Include="GPluginActionAsaasCustomerSearch.cs" />
+    <Compile Include="GPluginActionAsaasCustomerRecover.cs" />
     <Compile Include="GPluginActionAsaasPaymentsCreate.cs" />
     <Compile Include="GPluginActionAsaasPaymentsDelete.cs" />
     <Compile Include="GPluginActionAsaasPaymentsRefund.cs" />

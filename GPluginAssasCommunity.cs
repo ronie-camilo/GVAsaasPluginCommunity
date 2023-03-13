@@ -4,11 +4,11 @@ namespace Gvinci.Plugin.Action
 {
     public class GPluginAssasCommunity : IGPlugin
     {
-        public string ID => "{C6926C40-F906-4BF9-0000-462296E7027E}";
+        public string ID => "C6926C40-F906-4BF9-0000-462296E7027E";
 
         public string Name => "Community - Asaas Integration";
 
-        public string Description => "Plugin criado pela comunidade para completa integração do sistema de pagamento do Asaas";
+        public string Description => "";
 
         public string CompatibilityVersion => "2023";
 
@@ -23,7 +23,7 @@ namespace Gvinci.Plugin.Action
                     new GPluginActionAsaasCustomerCreate(this),
                     new GPluginActionAsaasCustomerRemove(this),
                     new GPluginActionAsaasCustomerRestore(this),
-                    new GPluginActionAsaasCustomerSearch(this),
+                    new GPluginActionAsaasCustomerRecover(this),
                     new GPluginActionAsaasPaymentsCreate(this),
                     new GPluginActionAsaasPaymentsDelete(this),
                     new GPluginActionAsaasPaymentsRefund(this),

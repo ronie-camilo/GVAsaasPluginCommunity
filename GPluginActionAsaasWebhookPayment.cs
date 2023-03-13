@@ -5,7 +5,7 @@ namespace Gvinci.Plugin.Action
 {
     internal class GPluginActionAsaasWebhookPayment : GPluginAction
     {
-        public override string ID => "{C6926C40-F906-4BF9-000A-462296E7027E}";
+        public override string ID => "C6926C40-F906-4BF9-0010-462296E7027E";
 
         public override string Name => "Webhook - Receber aviso de cobraça via Webhook";
 

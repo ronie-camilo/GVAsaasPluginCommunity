@@ -4,7 +4,7 @@ namespace Gvinci.Plugin.Action
 {
     internal class GPluginActionAsaasPaymentsRefund : GPluginAction
     {
-        public override string ID => "{C6926C40-F906-4BF9-0007-462296E7027E}";
+        public override string ID => "C6926C40-F906-4BF9-0007-462296E7027E";
 
         public override string Name => "Cobranças - Estornar";
 

@@ -6,7 +6,7 @@ namespace Gvinci.Plugin.Action
     internal class GPluginActionAsaasCustomerRemove : GPluginAction
     {
         //Definições de identificação e exibição da ação do plugin
-        public override string ID => "{C6926C40-F906-4BF9-0002-462296E7027E}";
+        public override string ID => "C6926C40-F906-4BF9-0002-462296E7027E";
         public override string Name => "Clientes - Remover um cliente existente";
         public override string Description => "Remover um cliente existente no Asaas";
 

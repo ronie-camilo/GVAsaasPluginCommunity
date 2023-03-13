@@ -6,8 +6,8 @@ namespace Gvinci.Plugin.Action
     internal class GPluginActionAsaasCustomerCreate : GPluginAction
     {
         //Definições de identificação e exibição da ação do plugin
-        public override string ID => "{C6926C40-F906-4BF9-0001-462296E7027E}";
-        public override string Name => "Clientes - Incluir novo ou atualizar";
+        public override string ID => "C6926C40-F906-4BF9-0001-462296E7027E";
+        public override string Name => "Clientes - Incluir cliente novo ou atualizar existente";
         public override string Description => "Incluir novo cliente ou atualizar cliente existente no Asaas";
 
         private List<GPluginActionParameter> _Paramiters;

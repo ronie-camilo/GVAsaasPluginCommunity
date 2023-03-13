@@ -126,7 +126,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static AsaasModelCommunity.CustomerResponseList Asaas_CustomerSearch(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string GroupName = "", string ExternalReference = "", int OffSet = 0, int Limit = 0, string Environment = "S")
+    public static AsaasModelCommunity.CustomerResponseList Asaas_CustomerRecover(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string GroupName = "", string ExternalReference = "", string Environment = "S")
     {
         try
         {
@@ -146,8 +146,6 @@ public static class GvinciAsaasCommunity
                 FilterArgs += (CpfCnpj != "" ? (FilterArgs != "" ? "&" : "") + "cpfCnpj=" + CpfCnpj : "");
                 FilterArgs += (GroupName != "" ? (FilterArgs != "" ? "&" : "") + "groupName=" + GroupName : "");
                 FilterArgs += (ExternalReference != "" ? (FilterArgs != "" ? "&" : "") + "externalReference=" + ExternalReference : "");
-                FilterArgs += (OffSet > 0 ? (FilterArgs != "" ? "&" : "") + "offSet=" + OffSet : "");
-                FilterArgs += (Limit > 0 ? (FilterArgs != "" ? "&" : "") + "limit=" + Limit : "");
                 url += FilterArgs;
 
                 if (FilterArgs == "")
