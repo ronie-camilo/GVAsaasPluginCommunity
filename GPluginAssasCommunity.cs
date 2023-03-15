@@ -20,7 +20,7 @@ namespace Gvinci.Plugin.Action
             {
                 return new List<GPluginAction>()
                 {
-                    new GPluginActionAsaasCustomerCreate(this),
+                    new GPluginActionAsaasCustomerSynchronize(this),
                     new GPluginActionAsaasCustomerRemove(this),
                     new GPluginActionAsaasCustomerRestore(this),
                     new GPluginActionAsaasCustomerRecover(this),

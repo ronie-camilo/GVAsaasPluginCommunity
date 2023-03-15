@@ -5,59 +5,81 @@ using System.Net;
 
 public static class GvinciAsaasCommunity
 {
-    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerCreate(string Token = "", string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "", string Environment = "S")
+    //Metodo para criação de um novo cliente ou atualização de um cliente existente na base do gateway Asaas, tendo como parametros
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerSynchronize(string Environment = "S", string Token = "", string CustomerID = "",string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "")
     {
         try
         {
-            AsaasModelCommunity.CustomerResponseList ListCustomers = Asaas_CustomerRecover(Token: Token, CpfCnpj: CpfCnpj, Environment: Environment);
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-
-            string CustomerID = (ListCustomers.totalCount > 0 ? ListCustomers.data[0].id : "");
-            string url = LinkAsaas + (ListCustomers.totalCount > 0 ? "/api/v3/customers/" + ListCustomers.data[0].id : "/api/v3/customers");
-
-            var client = new RestClient(url);
-
-            var request = (CustomerID == "" ? new RestRequest(Method.POST) : new RestRequest(Method.PUT));
-
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("access_token", Token);
-
-            var customerRequest = new AsaasModelCommunity.CustomerRequest 
+            //Verifica os dados requeridos (informados Nome e CPF ou então informado o CustomerID)
+            if ((Name != "" && CpfCnpj != "") || (CustomerID != ""))
             {
-                id = CustomerID,
-                name = Name,
-                cpfCnpj = CpfCnpj,
-                email = Email,
-                phone = Phone,
-                mobilePhone = Mobilephone,
-                address = Address,
-                addressNumber = AddressNumber,
-                complement = Complement,
-                province = Province,
-                postalCode = PostalCode,
-                externalReference = ExternalReference,
-                notificationDisabled = NotificationDisabled,
-                additionalEmails = AdditionalEmails,
-                municipalInscription = MunicipalInscription,
-                stateInscription = StateInscription,
-                observations = Observations,
-                groupName = GroupName
-            };
+                //Se não foi informado o CustomerID vai tentar localizar um cliente no Asaas usando as informações de Nome e CPF
+                string tempCustomerID = (CustomerID != "" ? CustomerID : Asaas_CustomerRecover(Environment: Environment, Token: Token, Name: Name, CpfCnpj: CpfCnpj).id);
 
-            request.AddJsonBody(customerRequest);
+                //Declara o protocolo de segurança
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+                
+                //Declara o ambiente será utilizado
+                string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
 
-            var response = client.Execute(request);
-            if (!response.IsSuccessful)
-            {
-                throw new Exception(response.Content);
+                //Declara adequadamente a url que será utilizada na chamada da API
+                string url = LinkAsaas + (tempCustomerID != "" ? "/api/v3/customers/" + tempCustomerID : "/api/v3/customers");
+
+                //Declara o cliente que fará a chamada da API
+                var client = new RestClient(url);
+
+                //Declara adequadamente o tipo de requisição que será utilizada
+                var request = (tempCustomerID == "" ? new RestRequest(Method.POST) : new RestRequest(Method.PUT));
+
+                //Declara e prepara as infomrações que serão enviadas na chamada da API
+                var customerRequest = new AsaasModelCommunity.CustomerRequest
+                {
+                    id = tempCustomerID,
+                    name = Name,
+                    cpfCnpj = CpfCnpj,
+                    email = Email,
+                    phone = Phone,
+                    mobilePhone = Mobilephone,
+                    address = Address,
+                    addressNumber = AddressNumber,
+                    complement = Complement,
+                    province = Province,
+                    postalCode = PostalCode,
+                    externalReference = ExternalReference,
+                    notificationDisabled = NotificationDisabled,
+                    additionalEmails = AdditionalEmails,
+                    municipalInscription = MunicipalInscription,
+                    stateInscription = StateInscription,
+                    observations = Observations,
+                    groupName = GroupName
+                };
+
+                //Adiciona as informações necessárias no cabeçario da requisição
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("access_token", Token);
+
+                //Insere as informações do cliente no corpo da requisição
+                request.AddJsonBody(customerRequest);
+
+                //Executa a chamada a API
+                var response = client.Execute(request);
+                if (!response.IsSuccessful)
+                {
+                    throw new Exception(response.Content);
+                }
+
+                //Prepara os dados de retorno
+                AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+                customerResponse.content = response.Content;
+
+                //Retrorna as informações do cliente que foi criado ou atualizado
+                return customerResponse;
             }
-
-            AsaasModelCommunity.CustomerResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
-            customerResponse.content = response.Content;
-
-            return customerResponse;
+            else
+            {
+                //Se não foi informado as dados requeridos será retornado Null
+                return null;
+            }
         }
 
         catch (Exception ex)
@@ -126,7 +148,7 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static AsaasModelCommunity.CustomerResponseList Asaas_CustomerRecover(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string GroupName = "", string ExternalReference = "", string Environment = "S")
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerRecover(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string GroupName = "", string ExternalReference = "", string Environment = "S")
     {
         try
         {
@@ -165,10 +187,11 @@ public static class GvinciAsaasCommunity
                 throw new Exception(response.Content);
             }
 
-            AsaasModelCommunity.CustomerResponseList listCustomers = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content);
-            listCustomers.content = response.Content.ToString();
+            AsaasModelCommunity.CustomerResponse customer = (CustomerID != "" ? JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content) : JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content).data[0]);
 
-            return listCustomers;
+            customer.content = response.Content;
+
+            return customer;
         }
 
         catch (Exception ex)

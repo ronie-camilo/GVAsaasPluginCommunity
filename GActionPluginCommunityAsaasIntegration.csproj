@@ -79,7 +79,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GPluginActionAsaasCustomerCreate.cs" />
+    <Compile Include="GPluginActionAsaasCustomerSynchronize.cs" />
     <Compile Include="GPluginActionAsaasCustomerRemove.cs" />
     <Compile Include="GPluginActionAsaasCustomerRestore.cs" />
     <Compile Include="GPluginActionAsaasCustomerRecover.cs" />
