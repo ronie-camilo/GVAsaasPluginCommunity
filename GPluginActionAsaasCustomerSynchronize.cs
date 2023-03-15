@@ -85,23 +85,13 @@ namespace Gvinci.Plugin.Action
             //Variavel para controle da identação que sera usada na escrita da ação do plugin
             string indentStr = new string('\t', Identation);
 
-            //Verifica se as informações requeridas foram informadas para prossegir
-            if (Token != "" && Nome != "" && CpfCnpj != "")
-            {
-                Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerSynchronize(Environment: {Ambiente}, Token: { Token }, CustomerID: {ClienteID}, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { ReferenciaExterna }, NotificationDisabled: bool.Parse({ NotificacaoDesabilitada }), AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo });");
-
-                //Testa se foi informado um controle para receber o referido dado de retorno
-                if (RetClienteID.Name != "")
-                {
-                    Builder.AppendLine(indentStr + RetClienteID.Name + ".Text = response.id;");
-                }
-
-                //Testa se foi informado um controle para receber o referido dado de retorno
-                if (Content.Name != "")
-                {
-                    Builder.AppendLine(indentStr + Content.Name + ".Text = response.content;");
-                }
-            }
+            //Escreve o código durante a geração de fontes do Gvinci
+            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerSynchronize(Environment: {Ambiente}, Token: { Token }, CustomerID: {ClienteID}, Name: { Nome }, CpfCnpj: { CpfCnpj }, Email: { Email }, Phone: { Telefone }, Mobilephone: { Celular }, Address: { Endereco }, AddressNumber: { Numero }, Complement: { Complemento }, Province: { Bairro }, PostalCode: { Cep }, ExternalReference: { ReferenciaExterna }, NotificationDisabled: bool.Parse({ NotificacaoDesabilitada }), AdditionalEmails: { EmailsAdicionais }, MunicipalInscription: { InscricaoMunicipal }, StateInscription: { InscricaoEstadual }, Observations: { Observacoes }, GroupName: { NomeGrupo });");
+            Builder.AppendLine(indentStr + "if (response != null)");
+            Builder.AppendLine(indentStr + "{");
+            Builder.AppendLine(indentStr + '\t' + RetClienteID.Name + ".Text = response.id;");
+            Builder.AppendLine(indentStr + '\t' + Content.Name + ".Text = response.content;");
+            Builder.AppendLine(indentStr + "}");
         }
     }
 }

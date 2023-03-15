@@ -5,13 +5,13 @@ using System.Net;
 
 public static class GvinciAsaasCommunity
 {
-    //Metodo para criação de um novo cliente ou atualização de um cliente existente na base do gateway Asaas, tendo como parametros
+    //Metodo para criação de um novo cliente ou atualização de um cliente existente na base do gateway Asaas
     public static AsaasModelCommunity.CustomerResponse Asaas_CustomerSynchronize(string Environment = "S", string Token = "", string CustomerID = "",string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "")
     {
         try
         {
-            //Verifica os dados requeridos (informados Nome e CPF ou então informado o CustomerID)
-            if ((Name != "" && CpfCnpj != "") || (CustomerID != ""))
+            //Verifica os dados requeridos (informados o Token e Nome e CPF ou então informado o Token e CustomerID)
+            if ((Token != "") && (Name != "" && CpfCnpj != "") || (CustomerID != ""))
             {
                 //Se não foi informado o CustomerID vai tentar localizar um cliente no Asaas usando as informações de Nome e CPF
                 string tempCustomerID = (CustomerID != "" ? CustomerID : Asaas_CustomerRecover(Environment: Environment, Token: Token, Name: Name, CpfCnpj: CpfCnpj).id);
@@ -19,7 +19,7 @@ public static class GvinciAsaasCommunity
                 //Declara o protocolo de segurança
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
                 
-                //Declara o ambiente será utilizado
+                //Declara e verifica o ambiente será utilizado
                 string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
 
                 //Declara adequadamente a url que será utilizada na chamada da API
@@ -61,7 +61,7 @@ public static class GvinciAsaasCommunity
                 //Insere as informações do cliente no corpo da requisição
                 request.AddJsonBody(customerRequest);
 
-                //Executa a chamada a API
+                //Executa a chamada da API
                 var response = client.Execute(request);
                 if (!response.IsSuccessful)
                 {
@@ -88,110 +88,190 @@ public static class GvinciAsaasCommunity
         }
     }
 
-    public static AsaasModelCommunity.CustomerRemoveResponse Asaas_CustomerRemove(string Token = "", string CustomerID = "", string Environment = "S")
+    //Metodo para remover um cliente na base do gateway Asaas
+    public static AsaasModelCommunity.CustomerRemoveResponse Asaas_CustomerRemove(string Environment = "S", string Token = "", string CustomerID = "")
     {
         try
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-            var client = new RestClient(LinkAsaas + "/api/v3/customers/" + CustomerID);
-
-            var request = new RestRequest(Method.DELETE);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("access_token", Token);
-
-            var response = client.Execute(request);
-            if (!response.IsSuccessful)
+            //Verifica os dados requeridos (informados o Token e CustomerID)
+            if ((Token != "") && (CustomerID != ""))
             {
-                throw new Exception(response.Content);
-            }
+                //Declara o protocolo de segurança
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
 
-            AsaasModelCommunity.CustomerRemoveResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerRemoveResponse>(response.Content);
-            customerResponse.content = response.Content;
+                //Declara e verifica o ambiente será utilizado
+                string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
 
-            return customerResponse;
-        }
+                //Declara adequadamente a url que será utilizada na chamada da API
+                string url = LinkAsaas + "/api/v3/customers/" + CustomerID;
 
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
+                //Declara o cliente que fará a chamada da API
+                var client = new RestClient(url);
 
-    public static AsaasModelCommunity.CustomerRemoveResponse Asaas_CustomerRestore(string Token = "", string CustomerID = "", string Environment = "S")
-    {
-        try
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-            var client = new RestClient(LinkAsaas + "/api/v3/customers/" + CustomerID + "/restore");
+                //Declara adequadamente o tipo de requisição que será utilizada
+                var request = new RestRequest(Method.DELETE);
 
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("access_token", Token);
+                //Adiciona as informações necessárias no cabeçario da requisição
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("access_token", Token);
 
-            var response = client.Execute(request);
-            if (!response.IsSuccessful)
-            {
-                throw new Exception(response.Content);
-            }
+                //Executa a chamada da API
+                var response = client.Execute(request);
+                if (!response.IsSuccessful)
+                {
+                    throw new Exception(response.Content);
+                }
 
-            AsaasModelCommunity.CustomerRemoveResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerRemoveResponse>(response.Content);
-            customerResponse.content = response.Content;
+                //Prepara os dados de retorno
+                AsaasModelCommunity.CustomerRemoveResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerRemoveResponse>(response.Content);
+                customerResponse.content = response.Content;
 
-            return customerResponse;
-        }
-
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
-
-    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerRecover(string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string GroupName = "", string ExternalReference = "", string Environment = "S")
-    {
-        try
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-            string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
-            string url = "", FilterArgs = "";
-
-            if (CustomerID != "") 
-            {
-                url = LinkAsaas + "/api/v3/customers/" + CustomerID;
+                //Retrorna as informações do cliente que foi removido
+                return customerResponse;
             }
             else
             {
-                url = LinkAsaas + "/api/v3/customers?";
-                FilterArgs += (Name != "" ? "name=" + Name : "");
-                FilterArgs += (Email != "" ? (FilterArgs != "" ? "&" : "") + "email=" + Email : "");
-                FilterArgs += (CpfCnpj != "" ? (FilterArgs != "" ? "&" : "") + "cpfCnpj=" + CpfCnpj : "");
-                FilterArgs += (GroupName != "" ? (FilterArgs != "" ? "&" : "") + "groupName=" + GroupName : "");
-                FilterArgs += (ExternalReference != "" ? (FilterArgs != "" ? "&" : "") + "externalReference=" + ExternalReference : "");
-                url += FilterArgs;
-
-                if (FilterArgs == "")
-                {
-                    return null;
-                }
+                //Se não foi informado as dados requeridos será retornado Null
+                return null;
             }
+        }
 
-            var client = new RestClient(url);
-            var request = new RestRequest();
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("access_token", Token);
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
-            var response = client.Get(request);
-            if (!response.IsSuccessful)
+    //Metodo para restaurar um cliente removido na base do gateway Asaas
+    public static AsaasModelCommunity.CustomerRemoveResponse Asaas_CustomerRestore(string Environment = "S", string Token = "", string CustomerID = "")
+    {
+        try
+        {
+            //Verifica os dados requeridos (informados o Token e CustomerID)
+            if ((Token != "") && (CustomerID != ""))
             {
-                throw new Exception(response.Content);
+                //Declara o protocolo de segurança
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+
+                //Declara e verifica o ambiente será utilizado
+                string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+
+                //Declara adequadamente a url que será utilizada na chamada da API
+                string url = LinkAsaas + "/api/v3/customers/" + CustomerID + "/restore";
+
+                //Declara o cliente que fará a chamada da API
+                var client = new RestClient(url);
+
+                //Declara adequadamente o tipo de requisição que será utilizada
+                var request = new RestRequest(Method.POST);
+
+                //Adiciona as informações necessárias no cabeçario da requisição
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("access_token", Token);
+
+                //Executa a chamada da API
+                var response = client.Execute(request);
+                if (!response.IsSuccessful)
+                {
+                    throw new Exception(response.Content);
+                }
+
+                //Prepara os dados de retorno
+                AsaasModelCommunity.CustomerRemoveResponse customerResponse = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerRemoveResponse>(response.Content);
+                customerResponse.content = response.Content;
+
+                //Retrorna as informações do cliente que foi restaurado
+                return customerResponse;
             }
+            else
+            {
+                //Se não foi informado as dados requeridos será retornado Null
+                return null;
+            }
+        }
 
-            AsaasModelCommunity.CustomerResponse customer = (CustomerID != "" ? JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content) : JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content).data[0]);
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
-            customer.content = response.Content;
+    //Metodo para recuperar informações um cliente na base do gateway Asaas
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerRecover(string Environment = "S", string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string GroupName = "", string ExternalReference = "")
+    {
+        try
+        {
+            //Verifica os dados requeridos (informados o Token e Nome e CPF ou então informado o Token e CustomerID)
+            if ((Token != "") && (Name != "" && CpfCnpj != "") || (CustomerID != ""))
+            {
+                //Declara o protocolo de segurança
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
 
-            return customer;
+                //Declara e verifica o ambiente será utilizado
+                string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
+
+                //Declara as variaveis que seram utilizadas pela url e filtro
+                string url = "", FilterArgs = "";
+
+                //Verifica se foi informado o CostumerID
+                if (CustomerID != "")
+                {
+                    //Monta adequadamente a url que será utilizada na chamada da API, tendo como base o CustomerID
+                    url = LinkAsaas + "/api/v3/customers/" + CustomerID;
+                }
+                else
+                {
+                    //inicia a montagem da url que será utilizada na chamada da API, tendo como base o filtro com as informações fornecidas
+                    url = LinkAsaas + "/api/v3/customers?";
+
+                    //Montagem do filtro com as informações fornecedas
+                    FilterArgs += (Name != "" ? "name=" + Name : "");
+                    FilterArgs += (Email != "" ? (FilterArgs != "" ? "&" : "") + "email=" + Email : "");
+                    FilterArgs += (CpfCnpj != "" ? (FilterArgs != "" ? "&" : "") + "cpfCnpj=" + CpfCnpj : "");
+                    FilterArgs += (GroupName != "" ? (FilterArgs != "" ? "&" : "") + "groupName=" + GroupName : "");
+                    FilterArgs += (ExternalReference != "" ? (FilterArgs != "" ? "&" : "") + "externalReference=" + ExternalReference : "");
+
+                    //Verifica se o filtro foi montado adequadamente
+                    if (FilterArgs == "")
+                    {
+                        //Se não montou o filtro será retornado Null
+                        return null;
+                    }
+
+                    //Conclui a montagem da url que será utilizada na chamada da API, tendo como base o filtro com as informações fornecidas
+                    url += FilterArgs;
+
+                }
+
+                //Declara o cliente que fará a chamada da API
+                var client = new RestClient(url);
+
+                //Declara adequadamente o tipo de requisição que será utilizada
+                var request = new RestRequest(Method.GET);
+
+                //Adiciona as informações necessárias no cabeçario da requisição
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("access_token", Token);
+
+                //Executa a chamada da API
+                var response = client.Execute(request);
+                if (!response.IsSuccessful)
+                {
+                    throw new Exception(response.Content);
+                }
+
+                //Prepara os dados de retorno
+                AsaasModelCommunity.CustomerResponse customer = (CustomerID != "" ? JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content) : JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content).data[0]);
+                customer.content = response.Content;
+
+                //Retrorna as informações do cliente que foi recuperado
+                return customer;
+            }
+            else
+            {
+                //Se não foi informado as dados requeridos será retornado Null
+                return null;
+            }
         }
 
         catch (Exception ex)

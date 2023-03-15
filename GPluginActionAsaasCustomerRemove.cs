@@ -49,23 +49,13 @@ namespace Gvinci.Plugin.Action
             //Variavel para controle da identação que sera usada na escrita da ação do plugin
             string indentStr = new string('\t', Identation);
 
-            //Verifica se as informações requeridas foram informadas para prossegir
-            if (Token != "" && ClienteID != "")
-            {
-                Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerRemove(Token: {Token}, CustomerID: {ClienteID}, Environment: {Ambiente});");
-
-                //Testa se foi informado um controle para receber o referido dado de retorno
-                if (RetEstadoRemocao.Name != "")
-                {
-                    Builder.AppendLine(indentStr + RetEstadoRemocao.Name + ".Checked = response.deleted;");
-                }
-
-                //Testa se foi informado um controle para receber o referido dado de retorno
-                if (Content.Name != "")
-                {
-                    Builder.AppendLine(indentStr + Content.Name + ".Text = response.content;");
-                }
-            }
+            //Escreve o código durante a geração de fontes do Gvinci
+            Builder.AppendLine(indentStr + $"var response = GvinciAsaasCommunity.Asaas_CustomerRemove(Token: {Token}, CustomerID: {ClienteID}, Environment: {Ambiente});");
+            Builder.AppendLine(indentStr + "if (response != null)");
+            Builder.AppendLine(indentStr + "{");
+            Builder.AppendLine(indentStr + '\t' + RetEstadoRemocao.Name + ".Checked = response.deleted;");
+            Builder.AppendLine(indentStr + '\t' + Content.Name + ".Text = response.content;");
+            Builder.AppendLine(indentStr + "}");
         }
     }
 }
