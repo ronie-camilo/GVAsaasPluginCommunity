@@ -46,7 +46,7 @@ public static class GvinciAsaasCommunity
                 var client = new RestClient(url);
 
                 //Declara adequadamente o tipo de requisição que será utilizada
-                var request = (tempCustomerID == "" ? new RestRequest(Method.Post.ToString()) : new RestRequest(Method.Put.ToString()));
+                var request = (tempCustomerID == "" ? new RestRequest(Method.POST) : new RestRequest(Method.PUT));
 
                 //Declara e prepara as infomrações que serão enviadas na chamada da API
                 var customerRequest = new AsaasModelCommunity.CustomerRequest
@@ -126,7 +126,7 @@ public static class GvinciAsaasCommunity
                 var client = new RestClient(url);
 
                 //Declara adequadamente o tipo de requisição que será utilizada
-                var request = new RestRequest(Method.Delete.ToString());
+                var request = new RestRequest(Method.DELETE);
 
                 //Adiciona as informações necessárias no cabeçario da requisição
                 request.AddHeader("Content-Type", "application/json");
@@ -180,7 +180,7 @@ public static class GvinciAsaasCommunity
                 var client = new RestClient(url);
 
                 //Declara adequadamente o tipo de requisição que será utilizada
-                var request = new RestRequest(Method.Post.ToString());
+                var request = new RestRequest(Method.POST);
 
                 //Adiciona as informações necessárias no cabeçario da requisição
                 request.AddHeader("Content-Type", "application/json");
@@ -264,7 +264,7 @@ public static class GvinciAsaasCommunity
                 var client = new RestClient(url);
 
                 //Declara adequadamente o tipo de requisição que será utilizada
-                var request = new RestRequest(Method.Get.ToString());
+                var request = new RestRequest(Method.GET);
 
                 //Adiciona as informações necessárias no cabeçario da requisição
                 request.AddHeader("Content-Type", "application/json");
