@@ -6,19 +6,36 @@ using System.Net;
 public static class GvinciAsaasCommunity
 {
     //Metodo para criação de um novo cliente ou atualização de um cliente existente na base do gateway Asaas
-    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerSynchronize(string Environment = "S", string Token = "", string CustomerID = "",string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "")
+    public static AsaasModelCommunity.CustomerResponse Asaas_CustomerSynchronize(string Environment = "S", string Token = "", string CustomerID = "", string Name = "", string CpfCnpj = "", string Email = "", string Phone = "", string Mobilephone = "", string Address = "", string AddressNumber = "", string Complement = "", string Province = "", string PostalCode = "", string ExternalReference = "", bool NotificationDisabled = false, string AdditionalEmails = "", string MunicipalInscription = "", string StateInscription = "", string Observations = "", string GroupName = "")
     {
         try
         {
             //Verifica os dados requeridos (informados o Token e Nome e CPF ou então informado o Token e CustomerID)
-            if ((Token != "") && (Name != "" && CpfCnpj != "") || (CustomerID != ""))
+            if ((Token != "") && (((Name != "") && (CpfCnpj != "")) || (CustomerID != "")))
             {
-                //Se não foi informado o CustomerID vai tentar localizar um cliente no Asaas usando as informações de Nome e CPF
-                string tempCustomerID = (CustomerID != "" ? CustomerID : Asaas_CustomerRecover(Environment: Environment, Token: Token, Name: Name, CpfCnpj: CpfCnpj).id);
+                //Declara variavel para do CustomerID
+                string tempCustomerID = "";
+
+                //Verifica se foi informado um CustomerID
+                if (CustomerID != "")
+                {
+                    //Atribui o valor do CustomerID para a variavel de tratamento
+                    tempCustomerID = CustomerID;
+                }
+                else
+                {
+                    //Declara variavel para receber os dados de cliente existente
+                    AsaasModelCommunity.CustomerResponse customer = Asaas_CustomerRecover(Environment: Environment, Token: Token, Name: Name, CpfCnpj: CpfCnpj);
+                    if (customer != null)
+                    {
+                        //Se conseguiu recuperar o CustomerID, atribui para a variavel temporaria
+                        tempCustomerID = customer.id;
+                    }
+                }
 
                 //Declara o protocolo de segurança
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-                
+
                 //Declara e verifica o ambiente será utilizado
                 string LinkAsaas = (Environment == "P" ? "https://www.asaas.com" : "https://sandbox.asaas.com");
 
@@ -260,9 +277,28 @@ public static class GvinciAsaasCommunity
                     throw new Exception(response.Content);
                 }
 
-                //Prepara os dados de retorno
-                AsaasModelCommunity.CustomerResponse customer = (CustomerID != "" ? JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content) : JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content).data[0]);
-                customer.content = response.Content;
+                //Declara a variavel costumer que será retornada
+                AsaasModelCommunity.CustomerResponse customer = null;
+
+                if (CustomerID != "")
+                {
+                    //Prepara os dados de retorno
+                    customer = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponse>(response.Content);
+                    customer.content = response.Content;
+                }
+                else
+                {
+                    //Declara a variavel listCostumers que será utilizada na montagem do retorno
+                    AsaasModelCommunity.CustomerResponseList listCustomers = JsonConvert.DeserializeObject<AsaasModelCommunity.CustomerResponseList>(response.Content);
+
+                    //Verifica se foi retornado pelo menos um cliente
+                    if (listCustomers.totalCount > 0)
+                    {
+                        //Prepara os dados de retorno
+                        customer = listCustomers.data[0];
+                        customer.content = response.Content;
+                    }
+                }
 
                 //Retrorna as informações do cliente que foi recuperado
                 return customer;
